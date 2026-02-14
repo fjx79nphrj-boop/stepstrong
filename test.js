@@ -5,17 +5,30 @@ const { test, expect } = require('@playwright/test');
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Clears all local data by going to a blank page first.
- * This prevents IndexedDB from getting "blocked" by an active connection.
+ * Clears all local data. 
+ * Fix: We go to the homepage FIRST so the browser gives us permission 
+ * to access localStorage and IndexedDB.
  */
 async function clearStorage(page) {
-  await page.goto('about:blank');
+  await page.goto('/'); 
   await page.evaluate(async () => {
+    // Clear standard storage
     localStorage.clear();
     sessionStorage.clear();
+    
+    // Clear the IndexedDB database
     const dbs = await window.indexedDB.databases();
-    await Promise.all(dbs.map(db => window.indexedDB.deleteDatabase(db.name)));
+    for (const db of dbs) {
+      await new Promise((resolve) => {
+        const req = window.indexedDB.deleteDatabase(db.name);
+        req.onsuccess = resolve;
+        req.onerror = resolve;
+        req.onblocked = resolve;
+      });
+    }
   });
+  // Reload to ensure the app sees the empty state
+  await page.reload();
 }
 
 /**
@@ -24,7 +37,7 @@ async function clearStorage(page) {
 async function ensureOnboarded(page) {
   const onboardingTrigger = page.getByText(/Before we start/i);
   try {
-    // Wait up to 5s for onboarding. If it doesn't show, we might already be in.
+    // Wait up to 5s for onboarding.
     await onboardingTrigger.waitFor({ state: 'visible', timeout: 5000 });
     await completeOnboarding(page);
   } catch (e) {
@@ -63,14 +76,13 @@ async function logOneInteraction(page, note = '') {
 test.describe('StepStrong Core Flow', () => {
   test.beforeEach(async ({ page }) => {
     await clearStorage(page);
-    await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
     await ensureOnboarded(page);
   });
 
   test('log entry persists and updates stats', async ({ page }) => {
     await logOneInteraction(page, 'CI Test Entry');
-    // Verify the "1" count appears in the dashboard stats
+    // Verify the "1" count appears
     await expect(page.getByText('1').first()).toBeVisible();
 
     // Check Timeline
@@ -82,9 +94,11 @@ test.describe('StepStrong Core Flow', () => {
     await page.getByRole('button', { name: /Log interaction/i }).click();
     await page.getByRole('button', { name: /Quiet act of service/i }).click();
     await page.getByRole('button', { name: /Neutral acknowledgment/i }).click();
+    
+    // Force a double click to test the "duplicate entry" bug
     await page.getByRole('button', { name: /Save/i }).dblclick();
     
-    // Should still only show "1" total interaction
+    // We expect only ONE entry, so the count should be "1"
     await expect(page.getByText('1').first()).toBeVisible();
   });
 });
