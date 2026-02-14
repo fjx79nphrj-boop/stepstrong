@@ -1,0 +1,6 @@
+{
+  "name": "Steadfast",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0"
+  }
+}
