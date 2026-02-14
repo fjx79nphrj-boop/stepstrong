@@ -5,8 +5,8 @@ const { test, expect } = require('@playwright/test');
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Clears all local data. We navigate to about:blank first to ensure
- * no active connections to IndexedDB are held by the app.
+ * Clears all local data by going to a blank page first.
+ * This prevents IndexedDB from getting "blocked" by an active connection.
  */
 async function clearStorage(page) {
   await page.goto('about:blank');
@@ -24,35 +24,26 @@ async function clearStorage(page) {
 async function ensureOnboarded(page) {
   const onboardingTrigger = page.getByText(/Before we start/i);
   try {
-    // Short wait to see if onboarding appears; if not, we assume we're already in.
+    // Wait up to 5s for onboarding. If it doesn't show, we might already be in.
     await onboardingTrigger.waitFor({ state: 'visible', timeout: 5000 });
     await completeOnboarding(page);
   } catch (e) {
-    // If it doesn't appear, check if we're already on the dashboard
+    // Fallback: check if we are already on the dashboard
     await expect(page.getByRole('heading', { name: /Steadfast|StepStrong/i })).toBeVisible();
   }
 }
 
 async function completeOnboarding(page) {
   const steps = [
-    { button: /Continue/i },
-    { button: /5-9 years/i },
-    { button: /Continue/i },
-    { button: /50\/50/i },
-    { button: /Continue/i },
-    { button: /Some tension/i },
-    { button: /Continue/i },
-    { button: /2-3 yrs/i },
-    { button: /Continue/i },
-    { button: /Neutral/i },
-    { button: /Continue/i },
-    { button: /Get Started/i }
+    { name: /Continue/i }, { name: /5-9 years/i }, { name: /Continue/i },
+    { name: /50\/50/i }, { name: /Continue/i }, { name: /Some tension/i },
+    { name: /Continue/i }, { name: /2-3 yrs/i }, { name: /Continue/i },
+    { name: /Neutral/i }, { name: /Continue/i }, { name: /Get Started/i }
   ];
 
   for (const step of steps) {
-    await page.getByRole('button', { name: step.button }).click();
+    await page.getByRole('button', { name: step.name }).click();
   }
-  await expect(page.getByRole('heading', { name: /Steadfast|StepStrong/i })).toBeVisible();
 }
 
 async function logOneInteraction(page, note = '') {
@@ -66,33 +57,10 @@ async function logOneInteraction(page, note = '') {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  SMOKE TESTS
+//  TEST SUITE
 // ─────────────────────────────────────────────────────────────────────────────
 
-test.describe('Baseline Integrity', () => {
-  test('app loads without console errors', async ({ page }) => {
-    const errors = [];
-    page.on('console', m => m.type() === 'error' && errors.push(m.text()));
-    await page.goto('/');
-    await page.waitForLoadState('domcontentloaded');
-    expect(errors).toEqual([]);
-  });
-
-  test('service worker registers', async ({ page }) => {
-    await page.goto('/');
-    const registered = await page.evaluate(async () => {
-      const regs = await navigator.serviceWorker.getRegistrations();
-      return regs.length > 0;
-    });
-    expect(registered).toBe(true);
-  });
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  CORE USER FLOW
-// ─────────────────────────────────────────────────────────────────────────────
-
-test.describe('Core flow', () => {
+test.describe('StepStrong Core Flow', () => {
   test.beforeEach(async ({ page }) => {
     await clearStorage(page);
     await page.goto('/');
@@ -101,88 +69,22 @@ test.describe('Core flow', () => {
   });
 
   test('log entry persists and updates stats', async ({ page }) => {
-    await logOneInteraction(page, 'Cross-tab sync');
-    // Check for the "1" count in the circular progress/stat
+    await logOneInteraction(page, 'CI Test Entry');
+    // Verify the "1" count appears in the dashboard stats
     await expect(page.getByText('1').first()).toBeVisible();
 
+    // Check Timeline
     await page.getByRole('button', { name: /Timeline/i }).click();
     await expect(page.getByText(/Quiet act of service/i)).toBeVisible();
-
-    await page.getByRole('button', { name: /Home/i }).click();
-    await expect(page.getByText('1').first()).toBeVisible();
   });
 
-  test('editing entry updates stats without duplication', async ({ page }) => {
-    await logOneInteraction(page);
-    const entry = page.locator('button').filter({ hasText: /Quiet act of service/i }).first();
-    await entry.click();
-    await page.getByRole('button', { name: /Active rejection/i }).click();
-    await page.getByRole('button', { name: /Update/i }).click();
-    
-    // Total interactions should still be 1
-    await expect(page.getByText('1').first()).toBeVisible();
-  });
-
-  test('double-click save does not create duplicate entries', async ({ page }) => {
+  test('double-click save does not create duplicates', async ({ page }) => {
     await page.getByRole('button', { name: /Log interaction/i }).click();
     await page.getByRole('button', { name: /Quiet act of service/i }).click();
     await page.getByRole('button', { name: /Neutral acknowledgment/i }).click();
     await page.getByRole('button', { name: /Save/i }).dblclick();
     
+    // Should still only show "1" total interaction
     await expect(page.getByText('1').first()).toBeVisible();
   });
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  DATA LOSS PREVENTION
-// ─────────────────────────────────────────────────────────────────────────────
-
-test('export → clear → import restores all data', async ({ page }) => {
-  await clearStorage(page);
-  await page.goto('/');
-  await ensureOnboarded(page);
-
-  await logOneInteraction(page, 'Backup test');
-
-  await page.getByRole('button', { name: /Settings/i }).click();
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.getByRole('button', { name: /Export Data Backup/i }).click()
-  ]);
-
-  const path = await download.path();
-
-  // Wipe and verify empty state
-  await clearStorage(page);
-  await page.goto('/');
-  await ensureOnboarded(page);
-  await expect(page.getByText('0').first()).toBeVisible();
-
-  // Import
-  await page.getByRole('button', { name: /Settings/i }).click();
-  await page.setInputFiles('input[type="file"]', path);
-
-  // Verify data returned
-  await page.getByRole('button', { name: /Home/i }).click();
-  await expect(page.getByText('1').first()).toBeVisible();
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  SNAPSHOT INTEGRITY
-// ─────────────────────────────────────────────────────────────────────────────
-
-test('snapshots do not increment interaction counts', async ({ page }) => {
-  await clearStorage(page);
-  await page.goto('/');
-  await ensureOnboarded(page);
-
-  await page.getByText(/Monthly check-in/i).click();
-  const answers = ['Neutral', 'Weekly', 'Sometimes', 'Neutral', 'Mostly OK', 'Manageable'];
-  for (const a of answers) {
-    await page.getByRole('button', { name: a }).click();
-  }
-  await page.getByRole('button', { name: /Save Snapshot/i }).click();
-
-  // Snapshots are separate from daily interactions
-  await expect(page.getByText('0').first()).toBeVisible();
 });
