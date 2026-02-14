@@ -1117,3 +1117,195 @@ test('profile persists: skips onboarding after reload', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Steadfast' })).toBeVisible();
   await expect(page.getByText('Before we start')).not.toBeVisible();
 });
+// ─────────────────────────────────────────────────────────────────────────────
+//  14. PWA & OFFLINE BEHAVIOR (REAL-WORLD FAILURE MODES)
+// ─────────────────────────────────────────────────────────────────────────────
+
+test('service worker registers', async ({ page }) => {
+  await page.goto('/');
+  const hasSW = await page.evaluate(async () => {
+    const regs = await navigator.serviceWorker.getRegistrations();
+    return regs.length > 0;
+  });
+  expect(hasSW).toBe(true);
+});
+
+test('app loads while offline after first visit', async ({ browser }) => {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+
+  // First load online
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+
+  // Go offline
+  await context.setOffline(true);
+
+  // Reload
+  await page.reload();
+  await expect(page.locator('html')).toBeVisible();
+});
+
+test('offline interaction logging does not crash', async ({ browser }) => {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+
+  await page.goto('/');
+  await clearStorage(page);
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+  await completeOnboarding(page);
+
+  await context.setOffline(true);
+
+  await page.getByRole('button', { name: 'Log interaction' }).click();
+  await page.getByRole('button', { name: /Quiet act of service/ }).click();
+  await page.getByRole('button', { name: /Neutral acknowledgment/ }).click();
+  await page.getByRole('button', { name: 'Save' }).click();
+
+  // If this crashes, Playwright will fail the test
+  await expect(page.getByRole('heading', { name: 'Steadfast' })).toBeVisible();
+});
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  15. DATA INTEGRITY & REGRESSION GUARDS
+// ─────────────────────────────────────────────────────────────────────────────
+
+test('editing an entry updates stats correctly', async ({ page }) => {
+  await page.goto('/');
+  await clearStorage(page);
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+  await completeOnboarding(page);
+
+  await logOneInteraction(page);
+
+  const entryRow = page.locator('button').filter({ hasText: /Quiet act of service/i }).first();
+  await entryRow.click();
+
+  await page.getByRole('button', { name: /Active rejection/ }).click();
+  await page.getByRole('button', { name: 'Update' }).click();
+
+  // Should still be exactly 1 entry
+  await expect(page.getByText('1').first()).toBeVisible();
+});
+
+test('deleting last entry resets stats to zero', async ({ page }) => {
+  await page.goto('/');
+  await clearStorage(page);
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+  await completeOnboarding(page);
+
+  await logOneInteraction(page);
+
+  const entryRow = page.locator('button').filter({ hasText: /Quiet act of service/i }).first();
+  await entryRow.click();
+  await page.getByRole('button', { name: 'Delete this entry' }).click();
+  await page.getByRole('button', { name: 'Yes, delete' }).click();
+
+  await expect(page.getByText('0').first()).toBeVisible();
+});
+
+test('snapshot saving does not create duplicate entries', async ({ page }) => {
+  await page.goto('/');
+  await clearStorage(page);
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+  await completeOnboarding(page);
+
+  await page.getByText('Monthly check-in').click();
+  const chips = ['Neutral', 'Weekly', 'Sometimes', 'Neutral', 'Mostly OK', 'Manageable'];
+  for (const chip of chips) {
+    await page.getByRole('button', { name: chip }).click();
+  }
+  await page.getByRole('button', { name: 'Save Snapshot' }).click();
+
+  // Snapshot should not increment "total logged"
+  await expect(page.getByText('0').first()).toBeVisible();
+});
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  16. EDGE CASES (THE STUFF USERS ACTUALLY DO)
+// ─────────────────────────────────────────────────────────────────────────────
+
+test('rapid double-click on Save does not create duplicate entries', async ({ page }) => {
+  await page.goto('/');
+  await clearStorage(page);
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+  await completeOnboarding(page);
+
+  await page.getByRole('button', { name: 'Log interaction' }).click();
+  await page.getByRole('button', { name: /Quiet act of service/ }).click();
+  await page.getByRole('button', { name: /Neutral acknowledgment/ }).click();
+
+  const saveBtn = page.getByRole('button', { name: 'Save' });
+  await saveBtn.dblclick();
+
+  await expect(page.getByText('1').first()).toBeVisible();
+});
+
+test('navigating tabs with modal open does not break UI', async ({ page }) => {
+  await page.goto('/');
+  await clearStorage(page);
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+  await completeOnboarding(page);
+
+  await page.getByRole('button', { name: 'Log interaction' }).click();
+  await page.locator('nav').getByRole('button', { name: 'Timeline' }).click();
+
+  // Modal should still be present or safely dismissed — not half-broken
+  await expect(
+    page.getByRole('heading', { name: /Log an Interaction/ }).or(
+      page.getByRole('heading', { name: 'Steadfast' })
+    )
+  ).toBeVisible();
+});
+
+test('hard reload during onboarding does not corrupt state', async ({ page }) => {
+  await page.goto('/');
+  await clearStorage(page);
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+
+  await page.getByRole('button', { name: 'Continue' }).click();
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+
+  // Should either resume onboarding or restart cleanly
+  await expect(
+    page.getByText('Before we start').or(
+      page.getByText('How old is the child?')
+    )
+  ).toBeVisible();
+});
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  17. PERFORMANCE & SMOKE REGRESSION
+// ─────────────────────────────────────────────────────────────────────────────
+
+test('home view renders under 1 second', async ({ page }) => {
+  const start = Date.now();
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  const duration = Date.now() - start;
+  expect(duration).toBeLessThan(1000);
+});
+
+test('no console errors on initial load', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', e => errors.push(e));
+  page.on('console', msg => {
+    if (msg.type() === 'error') errors.push(msg.text());
+  });
+
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+
+  expect(errors).toEqual([]);
+});
