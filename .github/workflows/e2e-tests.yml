@@ -10,17 +10,24 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Install Playwright
-      run: npm init -y && npm install @playwright/test
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      # If you don't have a package.json, this installs playwright directly
+      run: npm install @playwright/test 
       
-    - name: Install Playwright browsers + deps
+    - name: Install Playwright browsers
       run: npx playwright install --with-deps
       
     - name: Run Playwright tests
       run: npx playwright test
       
-    - uses: actions/upload-artifact@v4
-      if: always()
+    - name: Upload Report
+      uses: actions/upload-artifact@v4
+      if: always() # This ensures the report uploads even if tests fail
       with:
         name: playwright-report
         path: playwright-report/
+        retention-days: 30
