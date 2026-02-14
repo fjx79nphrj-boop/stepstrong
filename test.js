@@ -47,10 +47,17 @@ async function completeOnboarding(page) {
   }
 }
 
+/**
+ * FIXED: Uses 'exact: true' to ensure we only click the logging buttons
+ * and ignore the historical list items appearing in the 'Recent' section.
+ */
 async function logOneInteraction(page, note = '') {
   await page.getByRole('button', { name: /Log interaction/i }).click();
-  await page.getByRole('button', { name: /Quiet act of service/i }).click();
-  await page.getByRole('button', { name: /Neutral acknowledgment/i }).click();
+  
+  // exact: true ensures we don't accidentally click a previous entry
+  await page.getByRole('button', { name: '🫧 Quiet act of service', exact: true }).click();
+  await page.getByRole('button', { name: 'Neutral acknowledgment', exact: true }).click();
+  
   if (note) {
     await page.getByPlaceholder(/What happened/i).fill(note);
   }
@@ -72,14 +79,14 @@ test.describe('StepStrong Core Flow', () => {
   test('log entry persists and updates stats', async ({ page }) => {
     await logOneInteraction(page, 'CI Test Entry');
     await expect(page.getByText('1').first()).toBeVisible();
-    await page.getByRole('button', { name: /Timeline/i }).click();
+    await page.getByRole('button', { name: 'Timeline', exact: true }).click();
     await expect(page.getByText(/Quiet act of service/i)).toBeVisible();
   });
 
   test('double-click save does not create duplicates', async ({ page }) => {
     await page.getByRole('button', { name: /Log interaction/i }).click();
-    await page.getByRole('button', { name: /Quiet act of service/i }).click();
-    await page.getByRole('button', { name: /Neutral acknowledgment/i }).click();
+    await page.getByRole('button', { name: '🫧 Quiet act of service', exact: true }).click();
+    await page.getByRole('button', { name: 'Neutral acknowledgment', exact: true }).click();
     await page.getByRole('button', { name: /Save/i }).dblclick();
     await expect(page.getByText('1').first()).toBeVisible();
   });
@@ -89,23 +96,21 @@ test.describe('StepStrong Core Flow', () => {
   // ─────────────────────────────────────────────────────────────────────────────
   
   test('app remains responsive with 50 bulk entries', async ({ page }) => {
-    // Triples the default timeout to allow for the many UI actions
     test.slow(); 
 
     for (let i = 1; i <= 50; i++) {
       await page.getByRole('button', { name: /Log interaction/i }).click();
-      await page.getByRole('button', { name: /Quiet act of service/i }).click();
-      await page.getByRole('button', { name: /Neutral acknowledgment/i }).click();
-      // We use a unique note to ensure the search/filtering works later
+      
+      // FIXED: Specifically targeting menu buttons via exact strings
+      await page.getByRole('button', { name: '🫧 Quiet act of service', exact: true }).click();
+      await page.getByRole('button', { name: 'Neutral acknowledgment', exact: true }).click();
+      
       await page.getByPlaceholder(/What happened/i).fill(`Bulk Entry #${i}`);
       await page.getByRole('button', { name: /Save/i }).click();
     }
 
-    // Verify the dashboard shows the correct total
     await expect(page.getByText('50').first()).toBeVisible();
-
-    // Verify Timeline can still render and scroll to the last entry
-    await page.getByRole('button', { name: /Timeline/i }).click();
+    await page.getByRole('button', { name: 'Timeline', exact: true }).click();
     await expect(page.getByText('Bulk Entry #50')).toBeVisible();
   });
 
@@ -116,13 +121,18 @@ test.describe('StepStrong Core Flow', () => {
   test('can delete an entry and stats update', async ({ page }) => {
     await logOneInteraction(page, 'To be deleted');
     await expect(page.getByText('1').first()).toBeVisible();
+    
+    // Open the entry by clicking its note text
     await page.getByText('To be deleted').click();
     
-    const deleteBtn = page.getByRole('button', { name: /Delete|Remove|Trash/i });
+    // FIXED: Using exact name to ignore background rows
+    const deleteBtn = page.getByRole('button', { name: 'Delete this entry', exact: true });
+    
     if (await deleteBtn.isVisible()) {
        await deleteBtn.click();
-       if (await page.getByText(/Are you sure/i).isVisible()) {
-         await page.getByRole('button', { name: /Yes|Confirm|Delete/i }).click();
+       const confirmBtn = page.getByRole('button', { name: /Yes|Confirm|Delete/i }).last();
+       if (await confirmBtn.isVisible()) {
+         await confirmBtn.click();
        }
     }
     
@@ -136,7 +146,10 @@ test.describe('StepStrong Core Flow', () => {
     if (await settingsBtn.isVisible()) {
       await settingsBtn.click();
       const downloadPromise = page.waitForEvent('download');
-      await page.getByRole('button', { name: /Export|Backup|Download Data/i }).click();
+      
+      // FIXED: Targeted exact string prevents collision with "Import Data Backup"
+      await page.getByRole('button', { name: 'Export Data Backup', exact: true }).click();
+      
       const download = await downloadPromise;
       expect(download.suggestedFilename()).toContain('.json');
       
