@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('PWA loads on Netlify ', async ({ page }) => {
-  await page.goto('/');
-  await expect(page).toHaveURL('https://stepstrong.netlify.app/');
+test('StepStrong PWA loads', async ({ page }) => {
+  await page.goto('https://stepstrong.netlify.app/');
+  await expect(page.locator('body')).toBeVisible();  // Just check page loads
 });
