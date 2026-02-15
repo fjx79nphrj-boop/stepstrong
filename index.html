@@ -31,14 +31,14 @@ body { overscroll-behavior: none; }
 <script type="text/babel" data-type="module">
 const { useState, useEffect, useRef, useMemo } = React;
 
-/* ═══════════════════════════════════════════
-STEADFAST — Stepparent Relationship Tracker
-Local-first PWA • No backend • IndexedDB
-═══════════════════════════════════════════ */
+/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+STEADFAST \u2014 Stepparent Relationship Tracker
+Local-first PWA \u2022 No backend \u2022 IndexedDB
+\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
 
-// ── Fonts: system fonts only (no external requests) ──
+// \u2500\u2500 Fonts: system fonts only (no external requests) \u2500\u2500
 
-// ── IndexedDB ──
+// \u2500\u2500 IndexedDB \u2500\u2500
 const DB = “steadfast_v1”;
 const VER = 1;
 const S = { entries: “entries”, profile: “profile”, snapshots: “snapshots” };
@@ -66,23 +66,23 @@ async function getAll(s) { const db = await idb(); return new Promise((ok, f) =>
 async function get(s, k) { const db = await idb(); return new Promise((ok, f) => { const r = db.transaction(s, “readonly”).objectStore(s).get(k); r.onsuccess = () => ok(r.result); r.onerror = () => f(r.error); }); }
 async function del(s, k) { const db = await idb(); return new Promise((ok, f) => { const t = db.transaction(s, “readwrite”); t.objectStore(s).delete(k); t.oncomplete = () => ok(); t.onerror = () => f(t.error); }); }
 
-// ── Constants ──
+// \u2500\u2500 Constants \u2500\u2500
 const ACTIONS = [
-{ id: “service”, label: “Quiet act of service”, icon: “🫧”, c: “#7EB8A2” },
-{ id: “activity”, label: “Shared activity”, icon: “🎯”, c: “#8BAED4” },
-{ id: “conversation”, label: “Direct conversation”, icon: “💬”, c: “#C4A6D8” },
-{ id: “gift”, label: “Gift or treat”, icon: “🎁”, c: “#D4A574” },
-{ id: “presence”, label: “Being present”, icon: “🪑”, c: “#A8C5A0” },
-{ id: “space”, label: “Gave space”, icon: “🌿”, c: “#9DB8C7” },
-{ id: “boundary”, label: “Boundary-setting”, icon: “🛡️”, c: “#C9A0A0” },
+{ id: “service”, label: “Quiet act of service”, icon: “\ud83e\udee7”, c: “#7EB8A2” },
+{ id: “activity”, label: “Shared activity”, icon: “\ud83c\udfaf”, c: “#8BAED4” },
+{ id: “conversation”, label: “Direct conversation”, icon: “\ud83d\udcac”, c: “#C4A6D8” },
+{ id: “gift”, label: “Gift or treat”, icon: “\ud83c\udf81”, c: “#D4A574” },
+{ id: “presence”, label: “Being present”, icon: “\ud83e\ude91”, c: “#A8C5A0” },
+{ id: “space”, label: “Gave space”, icon: “\ud83c\udf3f”, c: “#9DB8C7” },
+{ id: “boundary”, label: “Boundary-setting”, icon: “\ud83d\udee1\ufe0f”, c: “#C9A0A0” },
 ];
 
 const RESPONSES = [
-{ id: “positive”, label: “Positive engagement”, icon: “✨”, c: “#7EB8A2”, score: 4 },
-{ id: “neutral”, label: “Neutral acknowledgment”, icon: “➖”, c: “#9DB8C7”, score: 3 },
-{ id: “withdrawal”, label: “Passive withdrawal”, icon: “🚪”, c: “#C9A0A0”, score: 2 },
-{ id: “rejection”, label: “Active rejection”, icon: “🔴”, c: “#D4796B”, score: 1 },
-{ id: “escalation”, label: “Escalation”, icon: “⚡”, c: “#B85C4F”, score: 0 },
+{ id: “positive”, label: “Positive engagement”, icon: “\u2728”, c: “#7EB8A2”, score: 4 },
+{ id: “neutral”, label: “Neutral acknowledgment”, icon: “\u2796”, c: “#9DB8C7”, score: 3 },
+{ id: “withdrawal”, label: “Passive withdrawal”, icon: “\ud83d\udeaa”, c: “#C9A0A0”, score: 2 },
+{ id: “rejection”, label: “Active rejection”, icon: “\ud83d\udd34”, c: “#D4796B”, score: 1 },
+{ id: “escalation”, label: “Escalation”, icon: “\u26a1”, c: “#B85C4F”, score: 0 },
 ];
 
 const CONTEXTS = [
@@ -97,7 +97,7 @@ const CARDS = [
 {
 triggers: [“rejection”, “escalation”],
 title: “The Loyalty Bind”,
-body: “Children often reject stepparents not because they dislike them, but because acceptance feels like betraying their biological parent. The rejection you’re feeling is rarely about you — it’s about the impossible emotional math the child is trying to solve.”,
+body: “Children often reject stepparents not because they dislike them, but because acceptance feels like betraying their biological parent. The rejection you’re feeling is rarely about you \u2014 it’s about the impossible emotional math the child is trying to solve.”,
 src: “Braithwaite et al., 2018”,
 quote: “"It was all in my head. I wouldn’t want to go out with my dad’s family, because I didn’t feel comfortable, nor did I feel like I fit in. It wasn’t my stepmom’s fault, nor my dad’s."”,
 who: “Former stepchild, now 30”,
@@ -112,22 +112,22 @@ who: “Adult stepchild reflection”,
 {
 triggers: [“rejection”, “escalation”],
 title: “"You’re Not My Real Parent"”,
-body: “This phrase is the most commonly cited verbal weapon. But research shows it reflects the child’s fear of losing their biological parent, not a genuine assessment. Children use it precisely because they know it will land — which paradoxically means the relationship matters enough to weaponize.”,
+body: “This phrase is the most commonly cited verbal weapon. But research shows it reflects the child’s fear of losing their biological parent, not a genuine assessment. Children use it precisely because they know it will land \u2014 which paradoxically means the relationship matters enough to weaponize.”,
 quote: “"I’m sorry I never gave you a chance; a fair, equal chance. I compared you to my father, and thought you were stealing my mother. I was afraid I was losing her. You taught me what a man should be to a woman."”,
 who: “Adult stepchild, looking back”,
 },
 {
 triggers: [“withdrawal”],
 title: “Withdrawal Isn’t Rejection”,
-body: “When a child withdraws — leaves the room, goes silent, avoids — it feels like rejection. But withdrawal is often a self-protective mechanism, not an offensive one. The child may be overwhelmed, processing, or simply not ready. Withdrawal is often a sign they’re aware of the relationship, not indifferent to it.”,
+body: “When a child withdraws \u2014 leaves the room, goes silent, avoids \u2014 it feels like rejection. But withdrawal is often a self-protective mechanism, not an offensive one. The child may be overwhelmed, processing, or simply not ready. Withdrawal is often a sign they’re aware of the relationship, not indifferent to it.”,
 quote: “"When I felt her pullback as a kid, I felt she didn’t care if I was there or not as long as she had my dad. And that’s what we don’t want our bonus children thinking, they aren’t wanted."”,
 who: “Former stepchild perspective”,
 },
 {
 triggers: [“neutral”, “positive”],
 title: “Neutral Is Progress”,
-body: “In stepfamily dynamics, a neutral response IS a positive signal. If the child accepted what you offered without resistance — even without warmth — that’s movement. The path typically goes: hostility → avoidance → tolerance → neutral acceptance → occasional warmth. You may be further along than you think.”,
-src: “Stepfamily integration typically takes 7–12 years. Neutral acceptance is a major milestone.”,
+body: “In stepfamily dynamics, a neutral response IS a positive signal. If the child accepted what you offered without resistance \u2014 even without warmth \u2014 that’s movement. The path typically goes: hostility \u2192 avoidance \u2192 tolerance \u2192 neutral acceptance \u2192 occasional warmth. You may be further along than you think.”,
+src: “Stepfamily integration typically takes 7\u201312 years. Neutral acceptance is a major milestone.”,
 },
 {
 triggers: [“rejection”, “withdrawal”, “escalation”],
@@ -146,24 +146,24 @@ who: “Stepmom community post”,
 {
 triggers: [“positive”, “neutral”],
 title: “Anchor This Moment”,
-body: “Your brain is wired to weigh negative interactions more heavily than positive ones. This moment — this neutral or positive response — is real data. It happened. When the next difficult moment comes, you’ll have concrete evidence that progress exists.”,
-src: “Negativity bias causes humans to weight negative events 3–5× more heavily than positive ones.”,
+body: “Your brain is wired to weigh negative interactions more heavily than positive ones. This moment \u2014 this neutral or positive response \u2014 is real data. It happened. When the next difficult moment comes, you’ll have concrete evidence that progress exists.”,
+src: “Negativity bias causes humans to weight negative events 3\u20135\u00d7 more heavily than positive ones.”,
 },
 ];
 
-// ── Daily Quotes (shown on Home, one per day) ──
+// \u2500\u2500 Daily Quotes (shown on Home, one per day) \u2500\u2500
 const DAILY_QUOTES = [
 // === REJECTION / ACTIVE RESISTANCE ===
 { q: “I’m sorry I never gave you a chance. I compared you to my father, and thought you were stealing my mother. I was afraid I was losing her. You taught me what a man should be to a woman.”, who: “Adult stepchild, looking back”, theme: “rejection” },
 { q: “She stopped trying to bond. But she still left medicine on my bedside when I was sick. Still paid my college application fees quietly. On my first job interview day, she ironed my shirt and said nothing else. That hurt more than any argument.”, who: “Adult stepchild reflection”, theme: “invisible-effort” },
 { q: “My car broke down on a highway at 2 AM. I called him because my phone was dying. He came in 40 minutes. Didn’t lecture me. Just fixed the issue and waited till I got home. He said, ‘I know I’m not your first call. I just want to be a reliable one.’”, who: “Adult stepchild about their stepdad”, theme: “invisible-effort” },
 { q: “It was all in my head. I wouldn’t want to go out with my dad’s family, because I didn’t feel comfortable. It wasn’t my stepmom’s fault, nor my dad’s.”, who: “Former stepchild, now 30”, theme: “rejection” },
-{ q: “I hated her for years. Not because she was bad — because she was there, and my mom wasn’t. That’s not fair, and I know that now. But a kid doesn’t know that.”, who: “Adult stepchild, age 28”, theme: “rejection” },
+{ q: “I hated her for years. Not because she was bad \u2014 because she was there, and my mom wasn’t. That’s not fair, and I know that now. But a kid doesn’t know that.”, who: “Adult stepchild, age 28”, theme: “rejection” },
 // === INVISIBLE EFFORT / LONG GAME ===
 { q: “He never tried to be my dad. He just kept showing up. Drove me places. Fixed things. Asked how school was, even when I gave one-word answers for three years straight. I didn’t appreciate it until I was 25.”, who: “Former stepchild about stepdad”, theme: “invisible-effort” },
 { q: “She made my lunch every day for five years and I never once said thank you. I think about that a lot now that I have my own kids.”, who: “Adult stepchild, now a parent”, theme: “invisible-effort” },
 { q: “The thing I remember most isn’t any big conversation. It’s that he always saved me the corner piece of the brownies. Every single time. He noticed that about me when nobody else did.”, who: “Adult stepchild, age 32”, theme: “invisible-effort” },
-{ q: “I used to slam my door every time she spoke to me. She never stopped knocking. Not to come in — just to say goodnight through the door. Every night for two years.”, who: “Former stepchild, now 26”, theme: “invisible-effort” },
+{ q: “I used to slam my door every time she spoke to me. She never stopped knocking. Not to come in \u2014 just to say goodnight through the door. Every night for two years.”, who: “Former stepchild, now 26”, theme: “invisible-effort” },
 { q: “When I got married, I asked my stepdad to walk me down the aisle. My mom cried. He cried. I cried. He had waited seventeen years for that moment and never once asked for it.”, who: “Adult stepdaughter”, theme: “long-view” },
 // === PROGRESS / HOPE ===
 { q: “The shift didn’t happen all at once. One day I just realized I’d started calling her house ‘home’ without thinking about it.”, who: “Former stepchild, age 24”, theme: “progress” },
@@ -185,7 +185,7 @@ const DAILY_QUOTES = [
 { q: “I didn’t go to her funeral because I was angry. I regret it every single day. She deserved better from me, and she probably knew that.”, who: “Adult stepchild, age 45”, theme: “long-view” },
 ];
 
-// ── Partner Communication Tips ──
+// \u2500\u2500 Partner Communication Tips \u2500\u2500
 const PARTNER_TIPS = [
 {
 title: “Make the invisible visible”,
@@ -196,79 +196,79 @@ why: “Partners often assume stepparents know their efforts are appreciated. Th
 {
 title: “The united front conversation”,
 situation: “You feel undermined when your partner overrides your decisions in front of the child.”,
-tip: “Try: ‘When we disagree about rules, can we talk about it privately first? When it happens in front of the kids, it signals that I don’t have authority here — and that makes it harder for them to respect me.’”,
+tip: “Try: ‘When we disagree about rules, can we talk about it privately first? When it happens in front of the kids, it signals that I don’t have authority here \u2014 and that makes it harder for them to respect me.’”,
 why: “Children in stepfamilies are highly attuned to power dynamics. If they see the bio-parent override the stepparent, it confirms their belief that the stepparent doesn’t count.”,
 },
 {
 title: “Don’t compete with the other parent”,
 situation: “Your partner compares you to the child’s other biological parent, or expects you to fill that role.”,
-tip: “Say: ‘I’m not trying to replace anyone. I’m trying to build my own relationship with your child. That takes time, and it will look different from what they have with their other parent — and that’s okay.’”,
+tip: “Say: ‘I’m not trying to replace anyone. I’m trying to build my own relationship with your child. That takes time, and it will look different from what they have with their other parent \u2014 and that’s okay.’”,
 why: “Stepparents who try to replicate the bio-parent role face the most resistance. Research consistently shows that a ‘friendly mentor’ role leads to better outcomes than a ‘replacement parent’ role.”,
 },
 {
 title: “When you need space from the child”,
 situation: “You need a break but feel guilty asking.”,
-tip: “Try: ‘I need an hour to reset after today. That’s not me giving up — it’s me making sure I can show up again tomorrow. Can you handle bedtime tonight?’”,
+tip: “Try: ‘I need an hour to reset after today. That’s not me giving up \u2014 it’s me making sure I can show up again tomorrow. Can you handle bedtime tonight?’”,
 why: “Stepparent burnout is real and under-discussed. Taking breaks isn’t abandonment. Partners need to understand that sustained effort requires recovery.”,
 },
 {
 title: “Sharing your Steadfast data”,
-situation: “Your partner asks how things are going, and you want to show them — not just tell them.”,
-tip: “Use the monthly report to share patterns: ‘Look — when I use quiet acts of service, the response is neutral or positive 70% of the time. Direct conversation only works 30%. This is real data, not just my feelings.’”,
+situation: “Your partner asks how things are going, and you want to show them \u2014 not just tell them.”,
+tip: “Use the monthly report to share patterns: ‘Look \u2014 when I use quiet acts of service, the response is neutral or positive 70% of the time. Direct conversation only works 30%. This is real data, not just my feelings.’”,
 why: “Data removes the emotion from the conversation. Your partner can see objective patterns instead of hearing what might sound like complaints.”,
 },
 {
 title: “When your partner says ‘just give it time’”,
 situation: “You’re struggling and your partner minimizes it with ‘they’ll come around.’”,
-tip: “Respond: ‘I hear you, and I know time matters. But right now, I need you to acknowledge that this is hard — not solve it, just see it. Can you just sit with me in this for a minute?’”,
+tip: “Respond: ‘I hear you, and I know time matters. But right now, I need you to acknowledge that this is hard \u2014 not solve it, just see it. Can you just sit with me in this for a minute?’”,
 why: “‘Give it time’ feels dismissive even when it’s true. What stepparents need in the moment is validation, not advice. Partners often default to fixing because the pain is uncomfortable to witness.”,
 },
 {
 title: “Asking for backup without starting a fight”,
 situation: “The child was disrespectful to you and your partner didn’t intervene.”,
-tip: “Wait until you’re calm, then: ‘When [specific thing] happened today and nothing was said, I felt unsupported. I’m not asking you to punish them — I’m asking you to say something in the moment, even something small, so they know that’s not okay.’”,
-why: “Bio-parents often freeze when caught between their child and their partner. They need specific, small requests — not general demands to ‘do something.’”,
+tip: “Wait until you’re calm, then: ‘When [specific thing] happened today and nothing was said, I felt unsupported. I’m not asking you to punish them \u2014 I’m asking you to say something in the moment, even something small, so they know that’s not okay.’”,
+why: “Bio-parents often freeze when caught between their child and their partner. They need specific, small requests \u2014 not general demands to ‘do something.’”,
 },
 {
 title: “The loyalty conflict isn’t about you”,
 situation: “Your partner’s child acts worse after visits with their other parent.”,
-tip: “Tell your partner: ‘I’ve noticed the pattern too. It’s not about us doing something wrong — they’re processing loyalty conflict. The best thing we can do is keep things calm and predictable when they come back.’”,
+tip: “Tell your partner: ‘I’ve noticed the pattern too. It’s not about us doing something wrong \u2014 they’re processing loyalty conflict. The best thing we can do is keep things calm and predictable when they come back.’”,
 why: “Children often act out after custody transitions because they feel guilty for enjoying time with the other household. Naming this pattern together reduces blame.”,
 },
 ];
 
-// ── Parental Alienation Content ──
+// \u2500\u2500 Parental Alienation Content \u2500\u2500
 const ALIENATION = {
 title: “When it’s more than normal resistance”,
-intro: “Parental alienation — when one parent actively turns a child against the other parent or stepparent — is a specific and severe dynamic that goes beyond typical stepfamily adjustment. If you’re experiencing this, it’s important to know that standard stepparenting strategies may not apply.”,
+intro: “Parental alienation \u2014 when one parent actively turns a child against the other parent or stepparent \u2014 is a specific and severe dynamic that goes beyond typical stepfamily adjustment. If you’re experiencing this, it’s important to know that standard stepparenting strategies may not apply.”,
 signs: [
 “The child repeats word-for-word phrases that sound like an adult’s language, not a child’s”,
 “Rejection escalated suddenly after contact with the other parent, with no other trigger”,
-“The child shows no ambivalence — they’re entirely negative with zero mixed feelings”,
+“The child shows no ambivalence \u2014 they’re entirely negative with zero mixed feelings”,
 “Previously warm interactions disappeared overnight”,
 “The child makes false accusations or dramatically rewrites shared history”,
 ],
 guidance: [
 { title: “This is not your fault”, text: “Alienation is a form of psychological manipulation by an adult. No amount of ‘trying harder’ on your part will fix it, because the problem isn’t coming from you or the child.” },
-{ title: “Document, don’t react”, text: “Keep factual records of what the child says and when. Your Steadfast entries can serve this purpose. Note specific phrases, dates, and context — especially correlation with custody transitions.” },
-{ title: “Protect the relationship you can”, text: “Focus on your relationship with your partner. Alienation puts enormous strain on couples. Your partner needs to be actively involved in addressing this — it cannot be your fight alone.” },
+{ title: “Document, don’t react”, text: “Keep factual records of what the child says and when. Your Steadfast entries can serve this purpose. Note specific phrases, dates, and context \u2014 especially correlation with custody transitions.” },
+{ title: “Protect the relationship you can”, text: “Focus on your relationship with your partner. Alienation puts enormous strain on couples. Your partner needs to be actively involved in addressing this \u2014 it cannot be your fight alone.” },
 { title: “Seek specialized help”, text: “General stepfamily advice often doesn’t apply to alienation. Look for therapists who specifically work with parental alienation or high-conflict custody situations.” },
 { title: “Lower your expectations without giving up”, text: “Progress in alienation cases is measured differently. A child maintaining any neutral contact at all may be the realistic best outcome while the alienation is active. This doesn’t mean forever.” },
 ],
-note: “Steadfast’s tracking tools can still be useful in alienation situations — documenting patterns, correlating behaviors with custody transitions, and maintaining your own perspective. But the perspective cards and benchmarks are designed for typical stepfamily resistance, not active alienation. If you’re in this situation, please adjust your expectations of this app and of yourself.”,
+note: “Steadfast’s tracking tools can still be useful in alienation situations \u2014 documenting patterns, correlating behaviors with custody transitions, and maintaining your own perspective. But the perspective cards and benchmarks are designed for typical stepfamily resistance, not active alienation. If you’re in this situation, please adjust your expectations of this app and of yourself.”,
 };
 
 const BENCH = {
 ages: {
-“0-4”: { t: “3–6 years”, note: “Young children are generally more accepting but may develop resistance as they understand family dynamics.” },
-“5-9”: { t: “5–8 years”, note: “School-age children have established bonds and may feel torn between loyalty to their biological parent and acceptance of you.” },
-“10-13”: { t: “7–12 years”, note: “Pre-teens and early teens face the hardest adjustment. Identity formation plus loyalty conflicts create intense resistance.” },
+“0-4”: { t: “3\u20136 years”, note: “Young children are generally more accepting but may develop resistance as they understand family dynamics.” },
+“5-9”: { t: “5\u20138 years”, note: “School-age children have established bonds and may feel torn between loyalty to their biological parent and acceptance of you.” },
+“10-13”: { t: “7\u201312 years”, note: “Pre-teens and early teens face the hardest adjustment. Identity formation plus loyalty conflicts create intense resistance.” },
 “14-17”: { t: “May extend into adulthood”, note: “Teenagers are developmentally separating from ALL parents. Adding a new one at this stage is exceptionally challenging. Progress often only becomes visible when they’re adults.” },
 },
 custody: {
 full: “Living together full-time creates more friction but also more opportunities for small positive interactions.”,
 “50-50”: “Regular transitions can trigger loyalty conflicts each time. But consistent presence normalizes the relationship.”,
-weekends: “Limited time means each interaction carries more weight — both positive and negative. Slower overall progress.”,
+weekends: “Limited time means each interaction carries more weight \u2014 both positive and negative. Slower overall progress.”,
 other: “Irregular or infrequent contact makes relationship-building significantly harder.”,
 },
 loyalty: {
@@ -278,11 +278,11 @@ strong: “Active loyalty conflict is the single biggest predictor of slower int
 unknown: “Not being sure is common. Watch for signs: does the child seem conflicted after visits with the other parent?”,
 },
 outcomes: [
-{ l: “Warm acceptance”, d: “Genuine affection, seeks your company, introduces you as family.”, p: “15–20%”, c: “#7EB8A2” },
-{ l: “Comfortable relationship”, d: “Easy coexistence, shared activities, mutual respect.”, p: “30–35%”, c: “#8BAED4” },
-{ l: “Respectful distance”, d: “Polite, cooperative, but not close. A realistic and valid success state.”, p: “25–30%”, c: “#9DB8C7” },
-{ l: “Cordial coexistence”, d: “Functional household, minimal friction, limited emotional connection.”, p: “15–20%”, c: “#C9A0A0” },
-{ l: “Ongoing difficulty”, d: “Continued resistance that may soften in adulthood — or may not.”, p: “5–10%”, c: “#D4796B” },
+{ l: “Warm acceptance”, d: “Genuine affection, seeks your company, introduces you as family.”, p: “15\u201320%”, c: “#7EB8A2” },
+{ l: “Comfortable relationship”, d: “Easy coexistence, shared activities, mutual respect.”, p: “30\u201335%”, c: “#8BAED4” },
+{ l: “Respectful distance”, d: “Polite, cooperative, but not close. A realistic and valid success state.”, p: “25\u201330%”, c: “#9DB8C7” },
+{ l: “Cordial coexistence”, d: “Functional household, minimal friction, limited emotional connection.”, p: “15\u201320%”, c: “#C9A0A0” },
+{ l: “Ongoing difficulty”, d: “Continued resistance that may soften in adulthood \u2014 or may not.”, p: “5\u201310%”, c: “#D4796B” },
 ],
 };
 
@@ -295,13 +295,13 @@ const SNAP_Q = [
 { id: “sustain”, q: “How sustainable does your current effort feel?”, s: [“Burning out”, “Unsustainable”, “Difficult”, “Manageable”, “Comfortable”, “Natural”] },
 ];
 
-// ── Helpers ──
+// \u2500\u2500 Helpers \u2500\u2500
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 const fmtDate = (d) => new Date(d).toLocaleDateString(“en-US”, { month: “short”, day: “numeric”, year: “numeric” });
 const fmtShort = (d) => new Date(d).toLocaleDateString(“en-US”, { month: “short”, day: “numeric” });
 const daysAgo = (d) => Math.round((Date.now() - new Date(d).getTime()) / 86400000);
 
-// ── Palette ──
+// \u2500\u2500 Palette \u2500\u2500
 const P = {
 bg: “#0f1117”, card: “#161921”, card2: “#1c2029”, border: “#252a35”,
 border2: “#2f3542”, warm: “#D4A574”, warmDim: “#D4A57444”,
@@ -309,9 +309,9 @@ text: “#E5D5C5”, muted: “#9CA3AF”, dim: “#6B7280”, dimmer: “#4B556
 green: “#7EB8A2”, blue: “#8BAED4”, purple: “#C4A6D8”, rose: “#C9A0A0”, red: “#D4796B”,
 };
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  MAIN APP
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function App() {
 const [view, setView] = useState(“loading”);
 const [entries, setEntries] = useState([]);
@@ -403,7 +403,7 @@ onClose={close}
         <h1 style={css.logo}>Steadfast</h1>
         <p style={css.sub}>Your progress is real, even when it's invisible</p>
       </div>
-      <button onClick={() => setModal({ type: "settings" })} style={css.iconBtn} aria-label="Settings">⚙</button>
+      <button onClick={() => setModal({ type: "settings" })} style={css.iconBtn} aria-label="Settings">\u2699</button>
     </header>
 
     <Nav view={view} go={setView} />
@@ -428,17 +428,17 @@ onClose={close}
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  NAVIGATION
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function Nav({ view, go }) {
 const items = [
-{ id: “home”, label: “Home”, ico: “⊙” },
-{ id: “timeline”, label: “Timeline”, ico: “━” },
-{ id: “patterns”, label: “Patterns”, ico: “◫” },
-{ id: “perspective”, label: “Shift”, ico: “◇” },
-{ id: “partner”, label: “Partner”, ico: “♡” },
-{ id: “benchmark”, label: “Bench”, ico: “△” },
+{ id: “home”, label: “Home”, ico: “\u2299” },
+{ id: “timeline”, label: “Timeline”, ico: “\u2501” },
+{ id: “patterns”, label: “Patterns”, ico: “\u25eb” },
+{ id: “perspective”, label: “Shift”, ico: “\u25c7” },
+{ id: “partner”, label: “Partner”, ico: “\u2661” },
+{ id: “benchmark”, label: “Bench”, ico: “\u25b3” },
 ];
 return (
 <nav style={css.nav}>
@@ -452,9 +452,9 @@ return (
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  HOME
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function Home({ entries, profile, snaps, openEntry, openSnap, openCard }) {
 const today = new Date().toISOString().slice(0, 10);
 const todayN = entries.filter(e => e.date.slice(0, 10) === today).length;
@@ -473,7 +473,7 @@ return (
 {/* Daily quote */}
 <div style={{ …css.card, padding: 20, marginBottom: 12, borderLeft: `3px solid ${P.warm}44`, background: `linear-gradient(135deg, ${P.card} 0%, #1a1520 100%)` }}>
 <p style={{ color: P.text, fontSize: 14, lineHeight: 1.7, fontStyle: “italic”, margin: 0 }}>”{dailyQuote.q}”</p>
-<p style={{ color: P.warm, fontSize: 11, margin: “10px 0 0”, opacity: 0.8 }}>— {dailyQuote.who}</p>
+<p style={{ color: P.warm, fontSize: 11, margin: “10px 0 0”, opacity: 0.8 }}>\u2014 {dailyQuote.who}</p>
 </div>
 {/* CTA card */}
 <div style={{ …css.card, background: `linear-gradient(135deg, ${P.card} 0%, ${P.card2} 100%)`, padding: 24, marginBottom: 12 }}>
@@ -488,13 +488,13 @@ return (
   <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
     <Stat n={days} l="days tracking" />
     <Stat n={entries.length} l="total logged" />
-    <Stat n={week.length > 0 ? Math.round((weekPos / week.length) * 100) + "%" : "—"} l="positive this wk" />
+    <Stat n={week.length > 0 ? Math.round((weekPos / week.length) * 100) + "%" : "\u2014"} l="positive this wk" />
   </div>
 
   {/* Snapshot prompt */}
   {snapDue && (
     <button onClick={openSnap} style={css.prompt}>
-      <span style={{ fontSize: 16 }}>📊</span>
+      <span style={{ fontSize: 16 }}>\ud83d\udcca</span>
       <div style={{ flex: 1 }}>
         <div style={{ color: P.text, fontSize: 14, fontWeight: 500 }}>Monthly check-in {lastSnap ? "due" : "available"}</div>
         <div style={{ color: P.dim, fontSize: 12, marginTop: 2 }}>
@@ -506,7 +506,7 @@ return (
 
   {/* Perspective shortcut */}
   <button onClick={openCard} style={{ ...css.prompt, borderColor: "#29232e" }}>
-    <span style={{ fontSize: 16 }}>◇</span>
+    <span style={{ fontSize: 16 }}>\u25c7</span>
     <div style={{ flex: 1 }}>
       <div style={{ color: P.text, fontSize: 14, fontWeight: 500 }}>Need a perspective shift?</div>
       <div style={{ color: P.dim, fontSize: 12, marginTop: 2 }}>Research-backed reframes for when things feel heavy.</div>
@@ -522,9 +522,9 @@ return (
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  TIMELINE
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function Timeline({ entries, snaps, range, setRange, openEntry }) {
 const ranges = { “1m”: 30, “3m”: 90, “6m”: 180, “1y”: 365, all: 99999 };
 const cut = Date.now() - ranges[range] * 86400000;
@@ -653,10 +653,10 @@ return (
           })}
         </div>
         <div style={{ display: "flex", gap: 10, marginTop: 10, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 10, color: P.red }}>● Very hard</span>
-          <span style={{ fontSize: 10, color: P.rose }}>● Difficult</span>
-          <span style={{ fontSize: 10, color: P.blue }}>● Mixed</span>
-          <span style={{ fontSize: 10, color: P.green }}>● Positive</span>
+          <span style={{ fontSize: 10, color: P.red }}>\u25cf Very hard</span>
+          <span style={{ fontSize: 10, color: P.rose }}>\u25cf Difficult</span>
+          <span style={{ fontSize: 10, color: P.blue }}>\u25cf Mixed</span>
+          <span style={{ fontSize: 10, color: P.green }}>\u25cf Positive</span>
         </div>
       </div>
 
@@ -720,7 +720,7 @@ return (
           if (item.type === "entry") return <EntryRow key={item.data.id} entry={item.data} onClick={() => openEntry(item.data)} />;
           return (
             <div key={"snap-" + item.data.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", margin: "4px 0", borderLeft: `3px solid ${P.purple}`, background: P.card2, borderRadius: "0 8px 8px 0" }}>
-              <span style={{ fontSize: 13 }}>📊</span>
+              <span style={{ fontSize: 13 }}>\ud83d\udcca</span>
               <div style={{ flex: 1 }}>
                 <span style={{ color: P.purple, fontSize: 11, fontWeight: 500 }}>Progress snapshot</span>
                 <span style={{ color: P.dim, fontSize: 10, marginLeft: 6 }}>{fmtShort(item.data.date)}</span>
@@ -738,9 +738,9 @@ return (
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  PATTERNS
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function Patterns({ entries, mode, setMode }) {
 const aPats = useMemo(() => {
 const m = {};
@@ -768,7 +768,7 @@ return { …a, pos, total: p.total };
 
 if (entries.length < 10) return (
 <div style={{ textAlign: “center”, padding: “48px 16px” }}>
-<p style={{ color: P.text, fontSize: 16, marginBottom: 8 }}>Building your patterns…</p>
+<p style={{ color: P.text, fontSize: 16, marginBottom: 8 }}>Building your patterns\u2026</p>
 <p style={{ color: P.dim, fontSize: 14 }}>Log at least 10 interactions to start seeing patterns. You have {entries.length}.</p>
 <div style={{ margin: “20px auto”, maxWidth: 240 }}>
 <div style={{ height: 6, background: P.border, borderRadius: 3, overflow: “hidden” }}>
@@ -825,7 +825,7 @@ return (
         <div key={ctx} style={{ ...css.card, padding: 14, marginBottom: 8 }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
             <span style={{ color: P.text, fontSize: 13 }}>{ctx}</span>
-            <span style={{ color: P.dim, fontSize: 11 }}>{data.total}×</span>
+            <span style={{ color: P.dim, fontSize: 11 }}>{data.total}\u00d7</span>
           </div>
           <div style={{ display: "flex", height: 16, borderRadius: 5, overflow: "hidden" }}>
             {[...RESPONSES].reverse().map(r => { const pct = (data[r.id] / data.total) * 100; if (pct === 0) return null; return <div key={r.id} style={{ width: `${pct}%`, background: r.c + "88" }} />; })}
@@ -840,7 +840,7 @@ return (
     <div>
       {ranked.length > 0 && (
         <div style={{ ...css.card, padding: 16, marginBottom: 10 }}>
-          <div style={{ color: P.green, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>🌱 Most effective approach</div>
+          <div style={{ color: P.green, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>\ud83c\udf31 Most effective approach</div>
           <p style={{ color: P.text, fontSize: 14, margin: 0, lineHeight: 1.6 }}>
             <strong>{ranked[0].icon} {ranked[0].label}</strong> produces a positive or neutral response {Math.round(ranked[0].pos)}% of the time ({ranked[0].total} interactions).
           </p>
@@ -848,7 +848,7 @@ return (
       )}
       {ranked.length > 1 && ranked[ranked.length - 1].pos < 40 && (
         <div style={{ ...css.card, padding: 16, marginBottom: 10 }}>
-          <div style={{ color: P.rose, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>⚡ Most friction</div>
+          <div style={{ color: P.rose, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>\u26a1 Most friction</div>
           <p style={{ color: P.text, fontSize: 14, margin: 0, lineHeight: 1.6 }}>
             <strong>{ranked[ranked.length - 1].icon} {ranked[ranked.length - 1].label}</strong> tends to produce more resistance ({Math.round(100 - ranked[ranked.length - 1].pos)}% negative).
           </p>
@@ -862,11 +862,11 @@ return (
         return (
           <div style={{ ...css.card, padding: 16, marginBottom: 10 }}>
             <div style={{ color: d > 0.3 ? P.green : d < -0.3 ? P.rose : P.blue, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>
-              {d > 0.3 ? "📈 Positive trend" : d < -0.3 ? "📉 Difficult stretch" : "━ Steady state"}
+              {d > 0.3 ? "\ud83d\udcc8 Positive trend" : d < -0.3 ? "\ud83d\udcc9 Difficult stretch" : "\u2501 Steady state"}
             </div>
             <p style={{ color: P.text, fontSize: 14, margin: 0, lineHeight: 1.6 }}>
-              {d > 0.3 ? "Recent interactions are trending more positively. Keep going — this is real progress."
-               : d < -0.3 ? "Recent interactions have been harder. This is normal — stepfamily relationships aren't linear. A difficult stretch doesn't erase progress."
+              {d > 0.3 ? "Recent interactions are trending more positively. Keep going \u2014 this is real progress."
+               : d < -0.3 ? "Recent interactions have been harder. This is normal \u2014 stepfamily relationships aren't linear. A difficult stretch doesn't erase progress."
                : "Responses have been consistent. In stepfamily dynamics, stability is itself a form of progress."}
             </p>
           </div>
@@ -874,7 +874,7 @@ return (
       })()}
       {entries.length < 20 && (
         <div style={{ ...css.card, padding: 16 }}>
-          <div style={{ color: P.blue, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>📊 More data needed</div>
+          <div style={{ color: P.blue, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>\ud83d\udcca More data needed</div>
           <p style={{ color: P.muted, fontSize: 13, margin: 0 }}>Trend analysis needs ~20 entries. You have {entries.length}.</p>
         </div>
       )}
@@ -886,29 +886,29 @@ return (
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  PERSPECTIVE
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function Perspective({ entries, openCard }) {
 return (
 <div>
 <p style={{ color: P.muted, fontSize: 14, marginBottom: 16 }}>
-Research-backed reframes. Not platitudes — real perspectives from research and adult stepchildren looking back.
+Research-backed reframes. Not platitudes \u2014 real perspectives from research and adult stepchildren looking back.
 </p>
 {CARDS.map((c, i) => (
 <button key={i} onClick={() => openCard(c)} style={{ …css.card, padding: 16, marginBottom: 8, width: “100%”, textAlign: “left”, cursor: “pointer”, border: `1px solid ${P.border}`, fontFamily: “inherit” }}>
 <div style={{ color: P.text, fontWeight: 500, marginBottom: 4, fontSize: 14 }}>{c.title}</div>
-<div style={{ color: P.dim, fontSize: 13, lineHeight: 1.5 }}>{c.body.slice(0, 110)}…</div>
-{c.quote && <div style={{ color: P.warm, fontSize: 11, marginTop: 6, fontStyle: “italic” }}>Includes firsthand account ◇</div>}
+<div style={{ color: P.dim, fontSize: 13, lineHeight: 1.5 }}>{c.body.slice(0, 110)}\u2026</div>
+{c.quote && <div style={{ color: P.warm, fontSize: 11, marginTop: 6, fontStyle: “italic” }}>Includes firsthand account \u25c7</div>}
 </button>
 ))}
 </div>
 );
 }
 
-// ════════════════════════════════════════
-//  PARTNER — Communication Tips & Share
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+//  PARTNER \u2014 Communication Tips & Share
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function Partner({ entries, profile, snaps }) {
 const [tab, setTab] = useState(“tips”);
 const [expandedTip, setExpandedTip] = useState(null);
@@ -983,7 +983,7 @@ return (
   {tab === "tips" && (
     <div>
       <p style={{ color: P.muted, fontSize: 14, marginBottom: 16, lineHeight: 1.6 }}>
-        How to talk to your partner about what you're going through — without it turning into a fight.
+        How to talk to your partner about what you're going through \u2014 without it turning into a fight.
       </p>
       {PARTNER_TIPS.map((t, i) => (
         <button key={i} onClick={() => setExpandedTip(expandedTip === i ? null : i)} style={{ ...css.card, padding: 16, marginBottom: 8, width: "100%", textAlign: "left", cursor: "pointer", border: `1px solid ${expandedTip === i ? P.warm + "44" : P.border}`, fontFamily: "inherit" }}>
@@ -1012,7 +1012,7 @@ return (
   {tab === "share" && (
     <div>
       <p style={{ color: P.muted, fontSize: 14, marginBottom: 16, lineHeight: 1.6 }}>
-        Share a monthly summary with your partner. It shows what you've been doing, what's working, and what you need — backed by data, not just feelings.
+        Share a monthly summary with your partner. It shows what you've been doing, what's working, and what you need \u2014 backed by data, not just feelings.
       </p>
       {report ? (
         <div>
@@ -1062,9 +1062,9 @@ return (
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  BENCHMARK
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function Benchmark({ profile, snaps, entries, openSnap, onDeleteSnap }) {
 if (!profile) return null;
 const age = BENCH.ages[profile.childAge];
@@ -1090,7 +1090,7 @@ return (
       <div style={{ marginTop: 12, padding: 12, background: P.bg, borderRadius: 8 }}>
         <p style={{ color: P.blue, fontSize: 12, margin: 0 }}>
           You're ~{profile.yearsInRole} year{profile.yearsInRole !== "1" ? "s" : ""} in.
-          {parseInt(profile.yearsInRole) < 4 ? " Still early — fastest documented full integration was 4 years." : ""}
+          {parseInt(profile.yearsInRole) < 4 ? " Still early \u2014 fastest documented full integration was 4 years." : ""}
           {parseInt(profile.yearsInRole) >= 7 ? " Your sustained presence matters, regardless of where the relationship has settled." : ""}
         </p>
       </div>
@@ -1149,7 +1149,7 @@ return (
     );
   })()}
 
-  {/* Snapshot trend charts — one per question */}
+  {/* Snapshot trend charts \u2014 one per question */}
   {snaps.length >= 2 && (
     <div style={{ ...css.card, padding: 16, marginBottom: 10 }}>
       <div style={{ color: P.warm, fontSize: 13, fontWeight: 500, marginBottom: 12 }}>Progress over time</div>
@@ -1197,7 +1197,7 @@ return (
     </div>
   )}
 
-  {/* Individual snapshots — compact list */}
+  {/* Individual snapshots \u2014 compact list */}
   {snaps.length > 0 && (
     <div style={{ ...css.card, padding: 16, marginBottom: 10 }}>
       <div style={{ color: P.warm, fontSize: 13, fontWeight: 500, marginBottom: 10 }}>All snapshots ({snaps.length})</div>
@@ -1222,9 +1222,9 @@ return (
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  ENTRY MODAL
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function EntryModal({ entry, onSave, onDelete, onClose }) {
 const isEdit = !!entry;
 const [action, setAction] = useState(entry?.action || “”);
@@ -1288,7 +1288,7 @@ return (
   {photo ? (
     <div style={{ marginBottom: 14, position: "relative", display: "inline-block" }}>
       <img src={photo} alt="Attached" style={{ width: "100%", maxWidth: 220, borderRadius: 10, display: "block", border: `1px solid ${P.border}` }} />
-      <button onClick={() => { setPhoto(null); if (fileRef.current) fileRef.current.value = ""; }} style={{ position: "absolute", top: 6, right: 6, background: "rgba(0,0,0,0.7)", border: "none", color: "#fff", borderRadius: "50%", width: 24, height: 24, fontSize: 13, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+      <button onClick={() => { setPhoto(null); if (fileRef.current) fileRef.current.value = ""; }} style={{ position: "absolute", top: 6, right: 6, background: "rgba(0,0,0,0.7)", border: "none", color: "#fff", borderRadius: "50%", width: 24, height: 24, fontSize: 13, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>\u2715</button>
     </div>
   ) : (
     <button onClick={() => fileRef.current?.click()} style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 14px", borderRadius: 9, border: `1px dashed ${P.border2}`, background: "transparent", color: P.dim, cursor: "pointer", fontSize: 13, fontFamily: "inherit", marginBottom: 14, width: "100%" }}>
@@ -1318,39 +1318,39 @@ return (
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  CARD (PERSPECTIVE) MODAL
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function CardModal({ card, onClose }) {
 return (
-<Modal onClose={onClose} title={`◇ ${card.title}`} titleColor={P.warm}>
+<Modal onClose={onClose} title={`\u25c7 ${card.title}`} titleColor={P.warm}>
 <p style={{ color: “#D1D5DB”, fontSize: 15, lineHeight: 1.7 }}>{card.body}</p>
 {card.src && <p style={{ color: P.blue, fontSize: 12, fontStyle: “italic”, marginTop: 12 }}>Source: {card.src}</p>}
 {card.quote && (
 <div style={{ background: P.bg, borderRadius: 12, padding: 16, marginTop: 16, borderLeft: `3px solid ${P.warm}44` }}>
 <p style={{ color: P.text, fontSize: 14, lineHeight: 1.7, fontStyle: “italic”, margin: 0 }}>{card.quote}</p>
-{card.who && <p style={{ color: P.warm, fontSize: 12, marginTop: 8, marginBottom: 0 }}>— {card.who}</p>}
+{card.who && <p style={{ color: P.warm, fontSize: 12, marginTop: 8, marginBottom: 0 }}>\u2014 {card.who}</p>}
 </div>
 )}
 <div style={{ marginTop: 20, padding: 14, background: `${P.card2}88`, borderRadius: 10, borderLeft: `3px solid ${P.green}33` }}>
 <p style={{ color: P.dim, fontSize: 12, margin: 0, lineHeight: 1.6 }}>
-This perspective isn’t about dismissing your pain. What you’re feeling is real. This is about separating what’s happening from what it means — because in stepfamily dynamics, those are often very different things.
+This perspective isn’t about dismissing your pain. What you’re feeling is real. This is about separating what’s happening from what it means \u2014 because in stepfamily dynamics, those are often very different things.
 </p>
 </div>
 </Modal>
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  SNAPSHOT MODAL
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function SnapModal({ snaps, onSave, onClose }) {
 const [ans, setAns] = useState({});
 const done = SNAP_Q.every(q => ans[q.id] !== undefined);
 
 return (
 <Modal onClose={onClose} title="Monthly Check-in">
-<p style={{ color: P.dim, fontSize: 13, marginBottom: 16 }}>Answer honestly — this is for you. These snapshots become valuable when you compare them over time.</p>
+<p style={{ color: P.dim, fontSize: 13, marginBottom: 16 }}>Answer honestly \u2014 this is for you. These snapshots become valuable when you compare them over time.</p>
 {SNAP_Q.map(q => (
 <div key={q.id} style={{ marginBottom: 18 }}>
 <label style={{ …css.label, fontSize: 13 }}>{q.q}</label>
@@ -1364,9 +1364,9 @@ return (
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  SETTINGS MODAL
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function SettingsModal({ onClose, onExport, onImport, onRedo }) {
 const ref = useRef(null);
 const [showPrivacy, setShowPrivacy] = useState(false);
@@ -1397,9 +1397,9 @@ return (
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  ONBOARDING
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function Onboarding({ onDone }) {
 const [step, setStep] = useState(0);
 const [d, setD] = useState({ childAge: “”, custody: “”, loyaltyConflict: “”, yearsInRole: “”, currentState: “”, startDate: new Date().toISOString() });
@@ -1408,8 +1408,8 @@ const upd = (k, v) => setD(p => ({ …p, [k]: v }));
 const steps = [
 { title: “Before we start”, sub: “This needs to be said upfront.”, content: (
 <div>
-<p style={css.obText}>The path to a functional relationship with a resistant stepchild typically takes <strong style={{ color: P.warm }}>7 to 12 years</strong>. The fastest documented full integration was 4 years. Some families never get there — and a stable, respectful distance is a valid outcome.</p>
-<p style={css.obText}>No app will change that timeline. What this tool does is make the invisible visible — so you can see whether your efforts are producing change, even when it doesn’t feel like it.</p>
+<p style={css.obText}>The path to a functional relationship with a resistant stepchild typically takes <strong style={{ color: P.warm }}>7 to 12 years</strong>. The fastest documented full integration was 4 years. Some families never get there \u2014 and a stable, respectful distance is a valid outcome.</p>
+<p style={css.obText}>No app will change that timeline. What this tool does is make the invisible visible \u2014 so you can see whether your efforts are producing change, even when it doesn’t feel like it.</p>
 <p style={css.obText}>You’re not here because you failed. You’re here because you care enough to track what’s actually happening.</p>
 </div>
 )},
@@ -1439,7 +1439,7 @@ return (
 </>}
 <div style={{ marginTop: 16, padding: 14, background: `${P.card2}88`, borderRadius: 10, borderLeft: `3px solid ${P.warm}44` }}>
 <p style={{ color: P.text, fontSize: 13, lineHeight: 1.6, margin: 0 }}>
-This tool won’t shorten that timeline. It will make the progress within it visible — so you don’t abandon what’s working, and you don’t burn out from effort that feels invisible.
+This tool won’t shorten that timeline. It will make the progress within it visible \u2014 so you don’t abandon what’s working, and you don’t burn out from effort that feels invisible.
 </p>
 </div>
 </div>
@@ -1472,9 +1472,9 @@ return (
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  SHARED UI COMPONENTS
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function Modal({ children, onClose, title, titleColor, small }) {
 return (
 <div style={css.overlay} onClick={onClose}>
@@ -1599,7 +1599,7 @@ return (
 {r && <span style={{ padding: “2px 7px”, borderRadius: 5, fontSize: 11, background: r.c + “1a”, color: r.c }}>{r.icon}</span>}
 </div>
 </div>
-{entry.note && <p style={{ color: P.muted, fontSize: 12, margin: 0, lineHeight: 1.4 }}>{entry.note.slice(0, 100)}{entry.note.length > 100 ? “…” : “”}</p>}
+{entry.note && <p style={{ color: P.muted, fontSize: 12, margin: 0, lineHeight: 1.4 }}>{entry.note.slice(0, 100)}{entry.note.length > 100 ? “\u2026” : “”}</p>}
 {entry.contexts?.length > 0 && (
 <div style={{ display: “flex”, gap: 3, flexWrap: “wrap”, marginTop: 4 }}>
 {entry.contexts.map(c => <span key={c} style={{ padding: “1px 5px”, borderRadius: 3, fontSize: 9, color: P.dim, background: P.card2 }}>{c}</span>)}
@@ -1620,9 +1620,9 @@ return (
 );
 }
 
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 //  STYLES
-// ════════════════════════════════════════
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 const css_chip = (active, color) => ({
 padding: “4px 9px”,
 borderRadius: 7,
