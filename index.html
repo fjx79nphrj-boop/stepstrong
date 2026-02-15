@@ -16,19 +16,10 @@ body { overscroll-behavior: none; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
-<script>
-(function() {
-  var origWarn = console.warn;
-  console.warn = function() {
-    if (arguments[0] && typeof arguments[0] === 'string' && arguments[0].indexOf('in-browser Babel') !== -1) return;
-    origWarn.apply(console, arguments);
-  };
-})();
-</script>
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel" data-type="module">
+<script type="text/babel">
 const { useState, useEffect, useRef, useMemo } = React;
 
 /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
@@ -329,7 +320,7 @@ setEntries(e.sort((a, b) => new Date(b.date) - new Date(a.date)));
 setProfile(p?.data || null);
 setSnaps(s.sort((a, b) => new Date(a.date) - new Date(b.date)));
 setView(p?.data ? “home” : “onboard”);
-} catch { setView(“onboard”); }
+} catch(e) { setView(“onboard”); }
 })();
 }, []);
 
@@ -358,7 +349,7 @@ if (d.entries) for (const x of d.entries) await put(S.entries, x);
 if (d.profile) await put(S.profile, { key: “main”, data: d.profile });
 if (d.snapshots) for (const x of d.snapshots) await put(S.snapshots, x);
 window.location.reload();
-} catch { alert(“Invalid backup file.”); }
+} catch(e) { alert(“Invalid backup file.”); }
 };
 r.readAsText(f);
 };
@@ -1648,7 +1639,7 @@ fab: { position: “fixed”, bottom: 22, right: 22, width: 54, height: 54, bord
 card: { background: P.card, borderRadius: 12, border: `1px solid ${P.border}` },
 prompt: { width: “100%”, background: P.card, border: `1px solid ${P.border}`, borderRadius: 12, padding: 14, display: “flex”, gap: 10, alignItems: “flex-start”, cursor: “pointer”, textAlign: “left”, marginBottom: 10, fontFamily: “inherit” },
 overlay: { position: “fixed”, inset: 0, background: “rgba(0,0,0,.72)”, backdropFilter: “blur(4px)”, zIndex: 100, display: “flex”, alignItems: “flex-end”, justifyContent: “center” },
-modal: { background: P.card, borderRadius: “18px 18px 0 0”, width: “100%”, maxHeight: “calc(90vh - env(safe-area-inset-top, 0px))”, overflow: “hidden”, border: `1px solid ${P.border}`, borderBottom: “none”, display: “flex”, flexDirection: “column” },
+modal: { background: P.card, borderRadius: “18px 18px 0 0”, width: “100%”, maxHeight: “85vh”, overflow: “hidden”, border: `1px solid ${P.border}`, borderBottom: “none”, display: “flex”, flexDirection: “column” },
 modalHdr: { display: “flex”, justifyContent: “space-between”, alignItems: “center”, padding: “18px 20px 0”, position: “sticky”, top: 0, background: P.card, zIndex: 10 },
 modalTitle: { color: P.text, fontSize: 17, fontFamily: “Georgia, ‘Times New Roman’, serif”, margin: 0, fontWeight: 500 },
 closeBtn: { background: “none”, border: “none”, color: P.dim, fontSize: 17, cursor: “pointer”, padding: 8 },
