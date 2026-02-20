@@ -3,6 +3,7 @@ import { CARDS, P, t } from "./config/index.js";
 import { idb, put, get, getAll, del, STORES } from "./db/indexedDb.js";
 import { isNative, initPurchases, checkEntitlement } from "./services/purchases.js";
 import { scheduleDaily } from "./services/notifications.js";
+import { meetsReviewCriteria, requestReview } from "./services/review.js";
 import { css } from "./styles/css.js";
 import Nav from "./components/Nav.jsx";
 import Home from "./components/Home.jsx";
@@ -62,7 +63,15 @@ export default function App() {
     }
   }, [isNativeApp, profile]);
 
-  const saveEntry = async (e) => { await put(S.entries, e); setEntries(prev => [e, ...prev.filter(x => x.id !== e.id)].sort((a, b) => new Date(b.date) - new Date(a.date))); };
+  const saveEntry = async (e) => {
+    await put(S.entries, e);
+    const updated = [e, ...entries.filter(x => x.id !== e.id)].sort((a, b) => new Date(b.date) - new Date(a.date));
+    setEntries(updated);
+    if (isNativeApp && !profile?.reviewPrompted && meetsReviewCriteria(updated)) {
+      await requestReview();
+      saveProfile({ ...profile, reviewPrompted: true });
+    }
+  };
   const delEntry = async (id) => { await del(S.entries, id); setEntries(prev => prev.filter(x => x.id !== id)); };
   const saveProfile = async (d) => { await put(S.profile, { key: "main", data: d }); setProfile(d); };
   const saveSnap = async (s) => { await put(S.snapshots, s); setSnaps(prev => [...prev.filter(x => x.id !== s.id), s].sort((a, b) => new Date(a.date) - new Date(b.date))); };
