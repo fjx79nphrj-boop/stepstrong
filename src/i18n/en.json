@@ -180,6 +180,9 @@
   "settings.erase_final": "All your data will be gone forever. There is no undo.",
   "settings.erase_permanent": "Permanently erase",
   "settings.keep_data": "Keep my data",
+  "settings.notifications": "Daily Reminder",
+  "settings.notifications_sub": "Remind me to log each day",
+  "settings.notifications_denied": "Notifications blocked — enable in Settings",
   "settings.show_privacy": "Show Privacy Policy",
   "settings.hide_privacy": "Hide Privacy Policy",
 
@@ -252,6 +255,14 @@
   "privacy.p4": "You can export your data as a JSON file at any time using the Export button above. You can erase all data using the Erase All Data option above, or by clearing your browser's site data for this app.",
   "privacy.p5": "Photos you attach are resized and stored locally as part of your entry data. They are never uploaded anywhere.",
   "privacy.contact": "Contact: [your email here]",
+
+  "subscribe.subscribe": "Subscribe to Premium",
+  "subscribe.restore": "Restore Purchases",
+  "subscribe.purchasing": "Purchasing\u2026",
+  "subscribe.restoring": "Restoring\u2026",
+  "subscribe.active": "Premium Active",
+  "subscribe.no_products": "No subscription products available. Please try again later.",
+  "subscribe.error": "Something went wrong. Please try again.",
 
   "common.all": "All",
   "common.loading": "Loading\u2026",

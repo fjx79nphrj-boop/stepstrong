@@ -6,9 +6,9 @@ import Tabs from "./ui/Tabs.jsx";
 import Btn from "./ui/Btn.jsx";
 import PremiumGate from "./PremiumGate.jsx";
 
-export default function Partner({ entries, profile, snaps, tier }) {
+export default function Partner({ entries, profile, snaps, tier, onRefreshTier }) {
   if (tier !== "premium") return (
-    <PremiumGate inline feature={t("premium.gate.partner")} description={t("premium.gate.partner_desc")} />
+    <PremiumGate inline feature={t("premium.gate.partner")} description={t("premium.gate.partner_desc")} onRefreshTier={onRefreshTier} />
   );
   const [tab, setTab] = useState("tips");
   const [expandedTip, setExpandedTip] = useState(null);

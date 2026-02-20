@@ -6,9 +6,9 @@ import BenchItem from "./ui/BenchItem.jsx";
 import Btn from "./ui/Btn.jsx";
 import PremiumGate from "./PremiumGate.jsx";
 
-export default function Benchmark({ profile, snaps, entries, tier, openSnap, onDeleteSnap }) {
+export default function Benchmark({ profile, snaps, entries, tier, openSnap, onDeleteSnap, onRefreshTier }) {
   if (tier !== "premium") return (
-    <PremiumGate inline feature={t("premium.gate.benchmark")} description={t("premium.gate.benchmark_desc")} />
+    <PremiumGate inline feature={t("premium.gate.benchmark")} description={t("premium.gate.benchmark_desc")} onRefreshTier={onRefreshTier} />
   );
   if (!profile) return null;
   const age = BENCH.ages[profile.childAge];

@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { CARDS, P, t } from "./config/index.js";
 import { idb, put, get, getAll, del, STORES } from "./db/indexedDb.js";
+import { isNative, initPurchases, checkEntitlement } from "./services/purchases.js";
+import { scheduleDaily } from "./services/notifications.js";
 import { css } from "./styles/css.js";
 import Nav from "./components/Nav.jsx";
 import Home from "./components/Home.jsx";
@@ -35,12 +37,30 @@ export default function App() {
         setEntries(e.sort((a, b) => new Date(b.date) - new Date(a.date)));
         const prof = p?.data || null;
         setProfile(prof);
-        setTier(prof?.tier || "free");
         setSnaps(s.sort((a, b) => new Date(a.date) - new Date(b.date)));
+        if (isNative()) {
+          await initPurchases();
+          const t = await checkEntitlement();
+          setTier(t);
+          if (prof?.notificationsEnabled) await scheduleDaily(20, 0);
+        } else {
+          setTier(prof?.tier || "free");
+        }
         setView(prof ? "home" : "onboard");
       } catch(e) { setView("onboard"); }
     })();
   }, []);
+
+  const isNativeApp = isNative();
+
+  const refreshTier = useCallback(async (newTier) => {
+    setTier(newTier);
+    if (!isNativeApp && profile) {
+      const updated = { ...profile, tier: newTier };
+      await put(S.profile, { key: "main", data: updated });
+      setProfile(updated);
+    }
+  }, [isNativeApp, profile]);
 
   const saveEntry = async (e) => { await put(S.entries, e); setEntries(prev => [e, ...prev.filter(x => x.id !== e.id)].sort((a, b) => new Date(b.date) - new Date(a.date))); };
   const delEntry = async (id) => { await del(S.entries, id); setEntries(prev => prev.filter(x => x.id !== id)); };
@@ -48,12 +68,22 @@ export default function App() {
   const saveSnap = async (s) => { await put(S.snapshots, s); setSnaps(prev => [...prev.filter(x => x.id !== s.id), s].sort((a, b) => new Date(a.date) - new Date(b.date))); };
   const delSnap = async (id) => { await del(S.snapshots, id); setSnaps(prev => prev.filter(x => x.id !== id)); };
 
-  const exportData = () => {
+  const exportData = async () => {
     const d = JSON.stringify({ entries, profile, snapshots: snaps, exported: new Date().toISOString() }, null, 2);
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(new Blob([d], { type: "application/json" }));
-    a.download = `steadfast-backup-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
+    const filename = `steadfast-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    if (isNativeApp && navigator.share) {
+      try {
+        const file = new File([d], filename, { type: "application/json" });
+        await navigator.share({ files: [file] });
+      } catch (e) {
+        if (e.name !== "AbortError") console.error("Export share error:", e);
+      }
+    } else {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([d], { type: "application/json" }));
+      a.download = filename;
+      a.click();
+    }
   };
 
   const importData = (evt) => {
@@ -118,9 +148,9 @@ export default function App() {
         {modal?.type === "card" && <CardModal card={modal.data} auto={modal.auto} onClose={close} onDisableAuto={() => { saveProfile({ ...profile, hideAutoCards: true }); }} />}
         {modal?.type === "snap" && (tier === "premium"
           ? <SnapModal snaps={snaps} onSave={(s) => { saveSnap(s); close(); }} onClose={close} />
-          : <PremiumGate feature={t("premium.gate.snap")} description={t("premium.gate.snap_desc")} onClose={close} />
+          : <PremiumGate feature={t("premium.gate.snap")} description={t("premium.gate.snap_desc")} onClose={close} onRefreshTier={refreshTier} />
         )}
-        {modal?.type === "settings" && <SettingsModal onClose={close} onExport={exportData} onImport={importData} onRedo={() => { setView("onboard"); close(); }} onErase={async () => { const db = await idb(); const tx = db.transaction([S.entries, S.profile, S.snapshots], "readwrite"); tx.objectStore(S.entries).clear(); tx.objectStore(S.profile).clear(); tx.objectStore(S.snapshots).clear(); tx.oncomplete = () => window.location.reload(); }} tier={tier} onSetTier={(t) => { setTier(t); saveProfile({ ...profile, tier: t }); }} />}
+        {modal?.type === "settings" && <SettingsModal onClose={close} onExport={exportData} onImport={importData} onRedo={() => { setView("onboard"); close(); }} onErase={async () => { const db = await idb(); const tx = db.transaction([S.entries, S.profile, S.snapshots], "readwrite"); tx.objectStore(S.entries).clear(); tx.objectStore(S.profile).clear(); tx.objectStore(S.snapshots).clear(); tx.oncomplete = () => window.location.reload(); }} tier={tier} onSetTier={(t) => { setTier(t); saveProfile({ ...profile, tier: t }); }} isNativeApp={isNativeApp} onRefreshTier={refreshTier} profile={profile} onSaveProfile={saveProfile} />}
 
         {/* Header */}
         <header style={css.hdr}>
@@ -136,10 +166,10 @@ export default function App() {
         <main id="main-content" style={{ padding: "4px 16px 120px" }}>
           {view === "home" && <Home entries={entries} profile={profile} snaps={snaps} tier={tier} openEntry={openEntry} openSnap={() => setModal({ type: "snap" })} openCard={() => { const c = CARDS[Math.floor(Math.random() * CARDS.length)]; setModal({ type: "card", data: c }); }} />}
           {view === "timeline" && <Timeline entries={entries} snaps={snaps} range={timeRange} setRange={setTimeRange} openEntry={openEntry} />}
-          {view === "patterns" && <Patterns entries={entries} mode={patMode} setMode={setPatMode} range={timeRange} setRange={setTimeRange} tier={tier} />}
+          {view === "patterns" && <Patterns entries={entries} mode={patMode} setMode={setPatMode} range={timeRange} setRange={setTimeRange} tier={tier} onRefreshTier={refreshTier} />}
           {view === "perspective" && <Perspective entries={entries} tier={tier} openCard={(c) => setModal({ type: "card", data: c })} />}
-          {view === "partner" && <Partner entries={entries} profile={profile} snaps={snaps} tier={tier} />}
-          {view === "benchmark" && <Benchmark profile={profile} snaps={snaps} entries={entries} tier={tier} openSnap={() => setModal({ type: "snap" })} onDeleteSnap={delSnap} />}
+          {view === "partner" && <Partner entries={entries} profile={profile} snaps={snaps} tier={tier} onRefreshTier={refreshTier} />}
+          {view === "benchmark" && <Benchmark profile={profile} snaps={snaps} entries={entries} tier={tier} openSnap={() => setModal({ type: "snap" })} onDeleteSnap={delSnap} onRefreshTier={refreshTier} />}
         </main>
 
         {/* FAB */}

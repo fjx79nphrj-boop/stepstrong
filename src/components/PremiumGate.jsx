@@ -1,7 +1,29 @@
+import { useState } from "react";
 import { P, t } from "../config/index.js";
+import { isNative, getOfferings, purchasePackage } from "../services/purchases.js";
 import Modal from "./ui/Modal.jsx";
+import Btn from "./ui/Btn.jsx";
 
-export default function PremiumGate({ feature, description, onClose, inline }) {
+export default function PremiumGate({ feature, description, onClose, inline, onRefreshTier }) {
+  const [purchasing, setPurchasing] = useState(false);
+  const [error, setError] = useState(null);
+  const native = isNative();
+
+  const handleSubscribe = async () => {
+    setError(null);
+    setPurchasing(true);
+    try {
+      const packages = await getOfferings();
+      if (!packages.length) { setError(t("subscribe.no_products")); setPurchasing(false); return; }
+      const newTier = await purchasePackage(packages[0]);
+      if (newTier && onRefreshTier) onRefreshTier(newTier);
+    } catch {
+      setError(t("subscribe.error"));
+    } finally {
+      setPurchasing(false);
+    }
+  };
+
   const content = (
     <div style={{ textAlign: "center", padding: inline ? "32px 16px" : 0 }}>
       <div style={{ fontSize: 32, marginBottom: 12 }}>{"\u2B50"}</div>
@@ -25,7 +47,16 @@ export default function PremiumGate({ feature, description, onClose, inline }) {
           ))}
         </div>
       </div>
-      <p style={{ color: P.dimmer, fontSize: 11, margin: 0 }}>{t("premium.coming_soon")}</p>
+      {native ? (
+        <div>
+          <Btn onClick={handleSubscribe} full disabled={purchasing}>
+            {purchasing ? t("subscribe.purchasing") : t("subscribe.subscribe")}
+          </Btn>
+          {error && <p style={{ color: P.red, fontSize: 12, margin: "8px 0 0" }}>{error}</p>}
+        </div>
+      ) : (
+        <p style={{ color: P.dimmer, fontSize: 11, margin: 0 }}>{t("premium.coming_soon")}</p>
+      )}
     </div>
   );
 

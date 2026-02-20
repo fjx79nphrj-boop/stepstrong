@@ -10,7 +10,7 @@ function contextLabel(ctx) {
   return t("context." + ctx);
 }
 
-export default function Patterns({ entries, mode, setMode, range, setRange, tier }) {
+export default function Patterns({ entries, mode, setMode, range, setRange, tier, onRefreshTier }) {
   const ranges = { "1m": 30, "3m": 90, "6m": 180, "1y": 365, all: 99999 };
   const cut = Date.now() - ranges[range] * 86400000;
   const fil = useMemo(() => entries.filter(e => new Date(e.date).getTime() >= cut), [entries, cut]);
@@ -94,7 +94,7 @@ export default function Patterns({ entries, mode, setMode, range, setRange, tier
       )}
 
       {mode === "context" && (tier !== "premium" ? (
-        <PremiumGate inline feature={t("premium.gate.context_analysis")} description={t("premium.gate.context_desc")} />
+        <PremiumGate inline feature={t("premium.gate.context_analysis")} description={t("premium.gate.context_desc")} onRefreshTier={onRefreshTier} />
       ) : (
         <div>
           <p style={{ color: P.dim, fontSize: 13, marginBottom: 8 }}>{t("patterns.which_contexts")}</p>
@@ -117,7 +117,7 @@ export default function Patterns({ entries, mode, setMode, range, setRange, tier
       ))}
 
       {mode === "insights" && (tier !== "premium" ? (
-        <PremiumGate inline feature={t("premium.gate.insights")} description={t("premium.gate.insights_desc")} />
+        <PremiumGate inline feature={t("premium.gate.insights")} description={t("premium.gate.insights_desc")} onRefreshTier={onRefreshTier} />
       ) : (
         <div>
           {ranked.length > 0 && (

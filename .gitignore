@@ -1,3 +1,10 @@
 node_modules
 dist
 .DS_Store
+
+# Capacitor native build artifacts
+ios/App/App/public
+ios/App/Pods
+android/app/src/main/assets/public
+android/app/build
+android/.gradle
