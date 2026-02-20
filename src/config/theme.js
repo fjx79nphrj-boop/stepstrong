@@ -1,0 +1,18 @@
+export const P = {
+  bg: "#0f1117",
+  card: "#161921",
+  card2: "#1c2029",
+  border: "#252a35",
+  border2: "#2f3542",
+  warm: "#D4A574",
+  warmDim: "#D4A57444",
+  text: "#E5D5C5",
+  muted: "#9CA3AF",
+  dim: "#7B8494",
+  dimmer: "#5E6678",
+  green: "#7EB8A2",
+  blue: "#8BAED4",
+  purple: "#C4A6D8",
+  rose: "#C9A0A0",
+  red: "#D4796B",
+};
