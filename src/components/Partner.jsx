@@ -77,6 +77,7 @@ export default function Partner({ entries, profile, snaps, tier, onRefreshTier }
 
   return (
     <div>
+      <p style={{ color: P.muted, fontSize: 14, marginBottom: 14, lineHeight: 1.6 }}>These conversations are hard. Here's how to start them.</p>
       <Tabs items={[t("partner.tips"), t("partner.share"), t("partner.alienation")]} active={tab === "tips" ? t("partner.tips") : tab === "share" ? t("partner.share") : t("partner.alienation")} onPick={v => setTab(v === t("partner.tips") ? "tips" : v === t("partner.share") ? "share" : "alienation")} />
 
       {tab === "tips" && (

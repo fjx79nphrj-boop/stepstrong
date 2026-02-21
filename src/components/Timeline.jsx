@@ -151,8 +151,7 @@ export default function Timeline({ entries, snaps, range, setRange, openEntry })
               }
               return (
                 <>
-                  <p style={{ color: P.dim, fontSize: 12, margin: "0 0 4px" }}>Tone over time &mdash; each bar is one {barLabel}</p>
-                  <p style={{ color: P.dimmer, fontSize: 11, margin: "0 0 10px" }}>Taller bars = more positive responses. Color shows the average: green is good, red is tough.</p>
+                  <p style={{ color: P.dim, fontSize: 12, margin: "0 0 10px" }}>Each bar is one {barLabel}. Taller = more positive. Color = overall tone.</p>
                   <div style={{ display: "flex", gap: bars.length > 60 ? 1 : 2, alignItems: "flex-end", height: 80 }}>
                     {bars.map((g, i) => {
                       const hPx = Math.max(Math.round((g.avg / 4) * 70), 4);

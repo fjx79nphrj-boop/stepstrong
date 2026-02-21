@@ -55,12 +55,13 @@ export default function Home({ entries, profile, snaps, tier, openEntry, openSna
       )}
 
       {/* Perspective shortcut */}
-      <button onClick={openCard} style={{ ...css.prompt, borderColor: "#29232e" }}>
+      <button onClick={openCard} style={{ ...css.prompt, borderColor: P.border2, background: `linear-gradient(135deg, ${P.card} 0%, #1a1520 100%)` }}>
         <span style={{ fontSize: 16 }}>{"\u25C7"}</span>
         <div style={{ flex: 1 }}>
           <div style={{ color: P.text, fontSize: 14, fontWeight: 500 }}>{t("home.perspective_shift")}</div>
           <div style={{ color: P.dim, fontSize: 12, marginTop: 2 }}>{t("home.perspective_sub")}</div>
         </div>
+        <span style={{ color: P.warm, fontSize: 18, alignSelf: "center" }}>{"\u203A"}</span>
       </button>
 
       {/* Recent */}
