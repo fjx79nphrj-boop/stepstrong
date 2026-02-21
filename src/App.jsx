@@ -79,7 +79,7 @@ export default function App() {
 
   const exportData = async () => {
     const d = JSON.stringify({ entries, profile, snapshots: snaps, exported: new Date().toISOString() }, null, 2);
-    const filename = `steadfast-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    const filename = `stepstrong-backup-${new Date().toISOString().slice(0, 10)}.json`;
     if (isNativeApp && navigator.share) {
       try {
         const file = new File([d], filename, { type: "application/json" });

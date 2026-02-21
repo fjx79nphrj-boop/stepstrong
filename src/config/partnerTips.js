@@ -24,7 +24,7 @@ export const PARTNER_TIPS = [
     why: "Stepparent burnout is real and under-discussed. Taking breaks isn't abandonment. Partners need to understand that sustained effort requires recovery.",
   },
   {
-    title: "Sharing your Steadfast data",
+    title: "Sharing your StepStrong data",
     situation: "Your partner asks how things are going, and you want to show them \u2014 not just tell them.",
     tip: "Use the monthly report to share patterns: 'Look \u2014 when I use quiet acts of service, the response is neutral or positive 70% of the time. Direct conversation only works 30%. This is real data, not just my feelings.'",
     why: "Data removes the emotion from the conversation. Your partner can see objective patterns instead of hearing what might sound like complaints.",

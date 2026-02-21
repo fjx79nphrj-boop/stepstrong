@@ -93,7 +93,7 @@
   "patterns.more_data": "More data needed",
   "patterns.more_data_desc": "Trend analysis needs ~20 entries in this range. You have {count}.",
 
-  "perspective.intro": "Research-backed reframes. Not platitudes — real perspectives from research and adult stepchildren looking back.",
+  "perspective.intro": "Research-backed perspectives and firsthand accounts from adult stepchildren.",
   "perspective.free_limit_reached": "You\u2019ve read your free card for today. Upgrade to Premium for unlimited access.",
   "perspective.free_remaining": "{count} free card remaining today. Premium unlocks all {total} cards.",
   "perspective.includes_account": "Includes firsthand account \u25C7",
@@ -187,7 +187,7 @@
   "settings.hide_privacy": "Hide Privacy Policy",
 
   "premium.title": "Premium Feature",
-  "premium.name": "Steadfast Premium",
+  "premium.name": "StepStrong Premium",
   "premium.tagline": "Unlock deeper insights into your journey",
   "premium.coming_soon": "Coming soon. You can preview premium features in Settings.",
   "premium.feature.context": "Context & insight pattern analysis",
@@ -235,7 +235,7 @@
   "onboard.continue": "Continue",
   "onboard.get_started": "Get Started",
 
-  "report.title": "Monthly Update from Steadfast",
+  "report.title": "Monthly Update from StepStrong",
   "report.logged": "This month, I logged {count} interactions with your child.",
   "report.positive_pct": "{pct}% of responses were positive or neutral.",
   "report.rejections": "{count} interactions involved active rejection or escalation.",
@@ -245,10 +245,10 @@
   "report.need2": "Back me up in the moment, even with just a word",
   "report.need3": "Remind me that my effort matters when I can't see it",
   "report.closing": "This isn't a complaint. It's me showing you what I'm tracking so we can be a team in this.",
-  "report.signature": "Sent from Steadfast",
+  "report.signature": "Sent from StepStrong",
 
   "privacy.title": "Privacy Policy",
-  "privacy.p1": "Steadfast stores all data locally on your device using IndexedDB. This includes interaction logs, profile settings, progress snapshots, and any photos you attach.",
+  "privacy.p1": "StepStrong stores all data locally on your device using IndexedDB. This includes interaction logs, profile settings, progress snapshots, and any photos you attach.",
   "privacy.p2": "No data is collected, transmitted, or stored on any server.",
   "privacy.p2_bold": "We have no access to your data. There is no account, no login, no analytics, no tracking, and no cookies.",
   "privacy.p3": "No external network requests are made. The app uses only system fonts and runs entirely offline after first load.",

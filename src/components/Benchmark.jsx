@@ -115,8 +115,12 @@ export default function Benchmark({ profile, snaps, entries, tier, openSnap, onD
                 <div style={{ color: P.muted, fontSize: 12, marginBottom: 2, lineHeight: 1.4 }}>{q.q}</div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                   <span style={{ color: P.dim, fontSize: 10 }}>{q.s[first]}</span>
-                  <span style={{ color: deltaColor, fontSize: 11, fontWeight: 500 }}>
-                    {delta > 0 ? "\u2192 " : delta < 0 ? "\u2192 " : ""}{q.s[latest]} {delta > 0 ? "\u2191" : delta < 0 ? "\u2193" : "="}
+                  <span style={{ fontSize: 11 }}>
+                    <span style={{ color: P.muted }}>{q.s[latest]}</span>
+                    {" "}
+                    <span style={{ color: delta > 0 ? P.green : delta < 0 ? P.red : P.dim, fontWeight: 700, fontSize: 14 }}>
+                      {delta > 0 ? "\u2191" : delta < 0 ? "\u2193" : "="}
+                    </span>
                   </span>
                 </div>
                 <svg viewBox={`0 0 ${w} ${h}`} style={{ width: "100%", height: h, display: "block" }} aria-hidden="true">
