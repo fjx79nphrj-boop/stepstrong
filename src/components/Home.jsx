@@ -29,7 +29,7 @@ export default function Home({ entries, profile, snaps, tier, openEntry, openSna
       {/* CTA card */}
       <div style={{ ...css.card, background: `linear-gradient(135deg, ${P.card} 0%, ${P.card2} 100%)`, padding: 24, marginBottom: 12 }}>
         <p style={{ color: P.muted, margin: "0 0 14px", fontSize: 15 }}>
-          {todayN === 0 ? t("home.how_did_it_go") : `${todayN} interaction${todayN > 1 ? "s" : ""} logged today.`}
+          {todayN === 0 ? t("home.how_did_it_go") : t("home.logged_today", { count: todayN, s: todayN > 1 ? "s" : "" })}
         </p>
         <Btn onClick={() => openEntry()}>{t("home.log_interaction")}</Btn>
       </div>
@@ -48,7 +48,7 @@ export default function Home({ entries, profile, snaps, tier, openEntry, openSna
           <div style={{ flex: 1 }}>
             <div style={{ color: P.text, fontSize: 14, fontWeight: 500 }}>{t("home.monthly_checkin")} {lastSnap ? t("home.monthly_checkin_due") : t("home.monthly_checkin_available")}</div>
             <div style={{ color: P.dim, fontSize: 12, marginTop: 2 }}>
-              {lastSnap ? `Last snapshot was ${daysAgo(lastSnap.date)} days ago.` : t("home.first_snapshot")} {t("home.compare_over_time")}
+              {lastSnap ? t("home.last_snapshot_days_ago", { days: daysAgo(lastSnap.date) }) : t("home.first_snapshot")} {t("home.compare_over_time")}
             </div>
           </div>
         </button>

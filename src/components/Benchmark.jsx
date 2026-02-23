@@ -19,10 +19,10 @@ export default function Benchmark({ profile, snaps, entries, tier, openSnap, onD
     <div>
       <SectionTitle>{t("benchmark.your_situation")}</SectionTitle>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
-        <BenchItem label={t("benchmark.child_age")} value={profile.childAge + " yrs"} />
+        <BenchItem label={t("benchmark.child_age")} value={t("benchmark.child_age_display", { age: profile.childAge })} />
         <BenchItem label={t("benchmark.custody")} value={profile.custody} />
         <BenchItem label={t("benchmark.loyalty_conflict")} value={profile.loyaltyConflict} />
-        <BenchItem label={t("benchmark.time_in_role")} value={profile.yearsInRole + " yr" + (profile.yearsInRole !== "1" ? "s" : "")} />
+        <BenchItem label={t("benchmark.time_in_role")} value={profile.yearsInRole !== "1" ? t("benchmark.time_yrs", { n: profile.yearsInRole }) : t("benchmark.time_yr", { n: profile.yearsInRole })} />
       </div>
 
       {age && (
@@ -32,9 +32,9 @@ export default function Benchmark({ profile, snaps, entries, tier, openSnap, onD
           <p style={{ color: P.muted, fontSize: 13, margin: 0, lineHeight: 1.6 }}>{age.note}</p>
           <div style={{ marginTop: 12, padding: 12, background: P.bg, borderRadius: 8 }}>
             <p style={{ color: P.blue, fontSize: 12, margin: 0 }}>
-              You're ~{profile.yearsInRole} year{profile.yearsInRole !== "1" ? "s" : ""} in.
-              {parseInt(profile.yearsInRole) < 4 ? " Still early \u2014 fastest documented full integration was 4 years." : ""}
-              {parseInt(profile.yearsInRole) >= 7 ? " Your sustained presence matters, regardless of where the relationship has settled." : ""}
+              {profile.yearsInRole !== "1" ? t("benchmark.years_in_plural", { years: profile.yearsInRole }) : t("benchmark.years_in", { years: profile.yearsInRole })}
+              {parseInt(profile.yearsInRole) < 4 ? t("benchmark.early_note") : ""}
+              {parseInt(profile.yearsInRole) >= 7 ? t("benchmark.sustained_note") : ""}
             </p>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function Benchmark({ profile, snaps, entries, tier, openSnap, onD
               {improved > declined ? t("benchmark.things_moving") : improved < declined ? t("benchmark.harder_stretch") : t("benchmark.holding_steady")}
             </div>
             <p style={{ color: P.muted, fontSize: 13, margin: "0 0 10px", lineHeight: 1.5 }}>
-              Over {daysBetween} days and {snaps.length} snapshots:
+              {t("benchmark.over_period", { days: daysBetween, count: snaps.length })}
             </p>
             <div style={{ display: "flex", gap: 12 }}>
               {improved > 0 && <div style={{ flex: 1, padding: 10, background: P.bg, borderRadius: 8, textAlign: "center" }}>
@@ -146,7 +146,7 @@ export default function Benchmark({ profile, snaps, entries, tier, openSnap, onD
       {/* Individual snapshots */}
       {snaps.length > 0 && (
         <div style={{ ...css.card, padding: 16, marginBottom: 10 }}>
-          <div style={{ color: P.warm, fontSize: 13, fontWeight: 500, marginBottom: 10 }}>{t("benchmark.all_snapshots").replace("{count}", snaps.length)}</div>
+          <div style={{ color: P.warm, fontSize: 13, fontWeight: 500, marginBottom: 10 }}>{t("benchmark.all_snapshots", { count: snaps.length })}</div>
           {[...snaps].reverse().map(s => (
             <div key={s.id} style={{ padding: "8px 0", borderBottom: `1px solid ${P.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>

@@ -62,7 +62,7 @@ export default function SettingsModal({ onClose, onExport, onImport, onRedo, onE
         }
       }
     } catch (e) {
-      setNotifError("Could not update notification. Try again.");
+      setNotifError(t("settings.notifications_error"));
       console.error("Notification toggle error:", e);
     }
   };

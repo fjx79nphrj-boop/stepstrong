@@ -44,7 +44,7 @@ export default function Patterns({ entries, mode, setMode, range, setRange, tier
       <Tabs items={Object.keys(ranges).map(r => r === "all" ? t("common.all") : r)} active={range === "all" ? t("common.all") : range} onPick={(v) => setRange(v === t("common.all") ? "all" : v)} />
       <div style={{ textAlign: "center", padding: "48px 16px" }}>
         <p style={{ color: P.text, fontSize: 16, marginBottom: 8 }}>{t("patterns.building")}</p>
-        <p style={{ color: P.dim, fontSize: 14 }}>Need at least 10 interactions in this range ({fil.length} found).{range !== "all" ? ` ${t("patterns.try_longer")}` : ""}</p>
+        <p style={{ color: P.dim, fontSize: 14 }}>{t("patterns.need_min", { count: fil.length, extra: range !== "all" ? t("patterns.try_longer") : "" })}</p>
         <div style={{ margin: "20px auto", maxWidth: 240 }}>
           <div style={{ height: 6, background: P.border, borderRadius: 3, overflow: "hidden" }}>
             <div style={{ height: "100%", width: `${Math.min(100, (fil.length / 10) * 100)}%`, background: `linear-gradient(90deg, ${P.warm}, ${P.green})`, borderRadius: 3 }} />
@@ -124,7 +124,7 @@ export default function Patterns({ entries, mode, setMode, range, setRange, tier
             <div style={{ ...css.card, padding: 16, marginBottom: 10 }}>
               <div style={{ color: P.green, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>{"\uD83C\uDF31"} {t("patterns.most_effective")}</div>
               <p style={{ color: P.text, fontSize: 14, margin: 0, lineHeight: 1.6 }}>
-                <strong>{ranked[0].icon} {t("action." + ranked[0].id)}</strong> produces a positive or neutral response {Math.round(ranked[0].pos)}% of the time ({ranked[0].total} interactions).
+                {t("patterns.most_effective_desc", { icon: ranked[0].icon, label: t("action." + ranked[0].id), pct: Math.round(ranked[0].pos), total: ranked[0].total })}
               </p>
             </div>
           )}
@@ -132,7 +132,7 @@ export default function Patterns({ entries, mode, setMode, range, setRange, tier
             <div style={{ ...css.card, padding: 16, marginBottom: 10 }}>
               <div style={{ color: P.rose, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>{"\u26A1"} {t("patterns.most_friction")}</div>
               <p style={{ color: P.text, fontSize: 14, margin: 0, lineHeight: 1.6 }}>
-                <strong>{ranked[ranked.length - 1].icon} {t("action." + ranked[ranked.length - 1].id)}</strong> tends to produce more resistance ({Math.round(100 - ranked[ranked.length - 1].pos)}% negative).
+                {t("patterns.most_friction_desc", { icon: ranked[ranked.length - 1].icon, label: t("action." + ranked[ranked.length - 1].id), pct: Math.round(100 - ranked[ranked.length - 1].pos) })}
               </p>
             </div>
           )}
@@ -155,7 +155,7 @@ export default function Patterns({ entries, mode, setMode, range, setRange, tier
           {fil.length < 20 && (
             <div style={{ ...css.card, padding: 16 }}>
               <div style={{ color: P.blue, fontSize: 13, fontWeight: 500, marginBottom: 6 }}>{"\uD83D\uDCCA"} {t("patterns.more_data")}</div>
-              <p style={{ color: P.muted, fontSize: 13, margin: 0 }}>Trend analysis needs ~20 entries in this range. You have {fil.length}.</p>
+              <p style={{ color: P.muted, fontSize: 13, margin: 0 }}>{t("patterns.more_data_desc", { count: fil.length })}</p>
             </div>
           )}
         </div>

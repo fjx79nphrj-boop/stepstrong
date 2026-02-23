@@ -40,14 +40,14 @@ export default function Partner({ entries, profile, snaps, tier, onRefreshTier }
       t("report.title"),
       String.fromCharCode(9472).repeat(29),
       "",
-      `This month, I logged ${total} interactions with your child.`,
+      t("report.logged", { count: total }),
       "",
-      `${pct}% of responses were positive or neutral.`,
-      `${rej} interactions involved active rejection or escalation.`,
+      t("report.positive_pct", { pct }),
+      t("report.rejections", { count: rej }),
       "",
     ];
     if (bestAction) {
-      lines.push(`What seems to work best: "${t("action." + bestAction.id)}" \u2014 ${Math.round(bestPct * 100)}% positive response rate.`);
+      lines.push(t("report.best_action", { label: t("action." + bestAction.id), pct: Math.round(bestPct * 100) }));
       lines.push("");
     }
     lines.push(t("report.need_from_you"));
@@ -77,7 +77,7 @@ export default function Partner({ entries, profile, snaps, tier, onRefreshTier }
 
   return (
     <div>
-      <p style={{ color: P.muted, fontSize: 14, marginBottom: 14, lineHeight: 1.6 }}>These conversations are hard. Here's how to start them.</p>
+      <p style={{ color: P.muted, fontSize: 14, marginBottom: 14, lineHeight: 1.6 }}>{t("partner.intro")}</p>
       <Tabs items={[t("partner.tips"), t("partner.share"), t("partner.alienation")]} active={tab === "tips" ? t("partner.tips") : tab === "share" ? t("partner.share") : t("partner.alienation")} onPick={v => setTab(v === t("partner.tips") ? "tips" : v === t("partner.share") ? "share" : "alienation")} />
 
       {tab === "tips" && (

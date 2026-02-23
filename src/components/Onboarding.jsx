@@ -30,13 +30,13 @@ export default function Onboarding({ onDone }) {
   const steps = [
     { title: t("onboard.before_start"), sub: t("onboard.before_sub"), content: (
       <div>
-        <p style={css.obText}>The path to a functional relationship with a resistant stepchild typically takes <strong style={{ color: P.warm }}>7 to 12 years</strong>. The fastest documented full integration was 4 years. Some families never get there &mdash; and a stable, respectful distance is a valid outcome.</p>
+        <p style={css.obText}>{t("onboard.before_text1")}</p>
         <p style={css.obText}>{t("onboard.before_text2")}</p>
-        <p style={css.obText}>You're not here because you failed. You're here because you care enough to track what's actually happening.</p>
+        <p style={css.obText}>{t("onboard.before_text3")}</p>
       </div>
     )},
     { title: t("onboard.child_age"), sub: t("onboard.child_age_sub"), content: (
-      <div style={css.chips}>{Object.keys(BENCH.ages).map(a => <ObBtn key={a} active={d.childAge === a} onClick={() => upd("childAge", a)}>{a} years</ObBtn>)}</div>
+      <div style={css.chips}>{Object.keys(BENCH.ages).map(a => <ObBtn key={a} active={d.childAge === a} onClick={() => upd("childAge", a)}>{t("onboard.age_years", { age: a })}</ObBtn>)}</div>
     )},
     { title: t("onboard.custody"), content: (
       <div style={css.chips}>{["full", "50-50", "weekends", "other"].map(c => <ObBtn key={c} active={d.custody === c} onClick={() => upd("custody", c)}>{c === "full" ? t("onboard.custody_full") : c === "50-50" ? t("onboard.custody_5050") : c === "weekends" ? t("onboard.custody_weekends") : t("onboard.custody_other")}</ObBtn>)}</div>
@@ -45,10 +45,10 @@ export default function Onboarding({ onDone }) {
       <div style={css.chips}>{["none", "mild", "strong", "unknown"].map(l => <ObBtn key={l} active={d.loyaltyConflict === l} onClick={() => upd("loyaltyConflict", l)}>{l === "none" ? t("onboard.loyalty_none") : l === "mild" ? t("onboard.loyalty_mild") : l === "strong" ? t("onboard.loyalty_strong") : t("onboard.loyalty_unknown")}</ObBtn>)}</div>
     )},
     { title: t("onboard.years"), content: (
-      <div style={css.chips}>{["< 1", "1", "2-3", "4-6", "7+"].map(y => <ObBtn key={y} active={d.yearsInRole === y} onClick={() => upd("yearsInRole", y)}>{y} yr{y !== "1" && y !== "< 1" ? "s" : ""}</ObBtn>)}</div>
+      <div style={css.chips}>{["< 1", "1", "2-3", "4-6", "7+"].map(y => <ObBtn key={y} active={d.yearsInRole === y} onClick={() => upd("yearsInRole", y)}>{y} {y !== "1" && y !== "< 1" ? t("onboard.yrs") : t("onboard.yr")}</ObBtn>)}</div>
     )},
     { title: t("onboard.state"), content: (
-      <div style={css.chips}>{["hostile", "avoidant", "tense", "neutral", "warming"].map(s => <ObBtn key={s} active={d.currentState === s} onClick={() => upd("currentState", s)}>{s.charAt(0).toUpperCase() + s.slice(1)}</ObBtn>)}</div>
+      <div style={css.chips}>{["hostile", "avoidant", "tense", "neutral", "warming"].map(s => <ObBtn key={s} active={d.currentState === s} onClick={() => upd("currentState", s)}>{t("onboard.state_" + s)}</ObBtn>)}</div>
     )},
     { title: t("onboard.benchmark_title"), content: (() => {
       const age = BENCH.ages[d.childAge];
@@ -56,7 +56,7 @@ export default function Onboarding({ onDone }) {
         <div>
           {age && <>
             <p style={{ color: P.dim, fontSize: 13 }}>{t("onboard.benchmark_intro")}</p>
-            <p style={{ color: P.text, fontSize: 22, fontFamily: "Georgia, 'Times New Roman', serif", fontWeight: 500, margin: "12px 0" }}>Typical timeline: {age.t}</p>
+            <p style={{ color: P.text, fontSize: 22, fontFamily: "Georgia, 'Times New Roman', serif", fontWeight: 500, margin: "12px 0" }}>{t("onboard.benchmark_timeline", { timeline: age.t })}</p>
             <p style={{ color: P.muted, fontSize: 13, lineHeight: 1.6 }}>{age.note}</p>
           </>}
           <div style={{ marginTop: 16, padding: 14, background: `${P.card2}88`, borderRadius: 10, borderLeft: `3px solid ${P.warm}44` }}>

@@ -132,7 +132,7 @@ export default function Timeline({ entries, snaps, range, setRange, openEntry })
           <div style={{ ...css.card, padding: 16, marginBottom: 12 }}>
             {(() => {
               let bars = scores;
-              let barLabel = "day";
+              let barLabel = t("timeline.bar_label_day");
               if (scores.length > 90) {
                 const weekMap = {};
                 scores.forEach(g => {
@@ -147,11 +147,11 @@ export default function Timeline({ entries, snaps, range, setRange, openEntry })
                 bars = Object.values(weekMap).sort((a, b) => a.key.localeCompare(b.key)).map(w => ({
                   key: w.key, avg: w.totalScore / w.totalCount, count: w.totalCount
                 }));
-                barLabel = "week";
+                barLabel = t("timeline.bar_label_week");
               }
               return (
                 <>
-                  <p style={{ color: P.dim, fontSize: 12, margin: "0 0 10px" }}>Each bar is one {barLabel}. Taller = more positive. Color = overall tone.</p>
+                  <p style={{ color: P.dim, fontSize: 12, margin: "0 0 10px" }}>{t("timeline.bar_desc", { unit: barLabel })}</p>
                   <div style={{ display: "flex", gap: bars.length > 60 ? 1 : 2, alignItems: "flex-end", height: 80 }}>
                     {bars.map((g, i) => {
                       const hPx = Math.max(Math.round((g.avg / 4) * 70), 4);
@@ -184,7 +184,7 @@ export default function Timeline({ entries, snaps, range, setRange, openEntry })
           {/* Small multiples */}
           {groups.length >= 2 && (
             <div style={{ ...css.card, padding: 16, marginBottom: 12 }}>
-              <p style={{ color: P.dim, fontSize: 12, margin: "0 0 8px" }}>Response frequency over time {useWeekly ? "(weekly)" : "(daily)"} &mdash; trend line shows direction</p>
+              <p style={{ color: P.dim, fontSize: 12, margin: "0 0 8px" }}>{t("timeline.response_freq", { mode: useWeekly ? t("timeline.weekly") : t("timeline.daily") })}</p>
               <div style={{ display: "flex", gap: 4, marginBottom: 12, flexWrap: "wrap" }}>
                 <button onClick={() => setSeriesFilter("all")} style={{ ...cssChip(seriesFilter === "all", P.warm) }}>{t("common.all")}</button>
                 {RESPONSES.map(r => (
@@ -241,7 +241,7 @@ export default function Timeline({ entries, snaps, range, setRange, openEntry })
               );
             });
           })()}
-          {fil.length > 60 && <p style={{ color: P.dim, fontSize: 12, textAlign: "center", padding: 12 }}>Showing 60 of {fil.length}</p>}
+          {fil.length > 60 && <p style={{ color: P.dim, fontSize: 12, textAlign: "center", padding: 12 }}>{t("timeline.showing_of", { total: fil.length })}</p>}
         </>
       )}
     </div>

@@ -13,6 +13,12 @@ export { P } from "./theme.js";
 
 const strings = en;
 
-export function t(key) {
-  return strings[key] ?? key;
+export function t(key, vars) {
+  let s = strings[key] ?? key;
+  if (vars) {
+    Object.entries(vars).forEach(([k, v]) => {
+      s = s.replace(new RegExp(`\\{${k}\\}`, "g"), String(v));
+    });
+  }
+  return s;
 }

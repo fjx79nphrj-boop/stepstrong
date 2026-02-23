@@ -56,6 +56,9 @@
 
   "timeline.tone_over_time": "Tone over time — each bar is one {unit}",
   "timeline.tone_sub": "Taller bars = more positive responses. Color shows the average: green is good, red is tough.",
+  "timeline.bar_label_day": "day",
+  "timeline.bar_label_week": "week",
+  "timeline.bar_desc": "Each bar is one {unit}. Taller = more positive. Color = overall tone.",
   "timeline.response_freq": "Response frequency over time {mode} — trend line shows direction",
   "timeline.weekly": "(weekly)",
   "timeline.daily": "(daily)",
@@ -113,6 +116,7 @@
   "partner.paste_hint": "Paste into a message, email, or note to share with your partner.",
   "partner.no_data": "Log some interactions first to generate a report.",
   "partner.warning_signs": "Warning signs",
+  "partner.intro": "These conversations are hard. Here's how to start them.",
 
   "benchmark.your_situation": "Your Situation",
   "benchmark.child_age": "Child's age",
@@ -134,6 +138,13 @@
   "benchmark.progress_over_time": "Progress over time",
   "benchmark.all_snapshots": "All snapshots ({count})",
   "benchmark.take_snapshot": "Take a Progress Snapshot",
+  "benchmark.child_age_display": "{age} yrs",
+  "benchmark.time_yr": "{n} yr",
+  "benchmark.time_yrs": "{n} yrs",
+  "benchmark.years_in": "You're ~{years} year in.",
+  "benchmark.years_in_plural": "You're ~{years} years in.",
+  "benchmark.early_note": " Still early — fastest documented full integration was 4 years.",
+  "benchmark.sustained_note": " Your sustained presence matters, regardless of where the relationship has settled.",
 
   "entry.edit_title": "Edit Interaction",
   "entry.log_title": "Log an Interaction",
@@ -183,6 +194,7 @@
   "settings.notifications": "Daily Reminder",
   "settings.notifications_sub": "Remind me to log each day",
   "settings.notifications_denied": "Notifications blocked — enable in Settings",
+  "settings.notifications_error": "Could not update notification. Try again.",
   "settings.show_privacy": "Show Privacy Policy",
   "settings.hide_privacy": "Hide Privacy Policy",
 
@@ -209,7 +221,7 @@
 
   "onboard.before_start": "Before we start",
   "onboard.before_sub": "This needs to be said upfront.",
-  "onboard.before_text1": "The path to a functional relationship with a resistant stepchild typically takes <strong>7 to 12 years</strong>. The fastest documented full integration was 4 years. Some families never get there — and a stable, respectful distance is a valid outcome.",
+  "onboard.before_text1": "The path to a functional relationship with a resistant stepchild typically takes 7 to 12 years. The fastest documented full integration was 4 years. Some families never get there — and a stable, respectful distance is a valid outcome.",
   "onboard.before_text2": "What this tool does is make the invisible visible — tracking what you do, how they respond, and whether anything is shifting. So when it feels like nothing is working, you'll have data that says otherwise. Or you'll know what to change.",
   "onboard.before_text3": "You're not here because you failed. You're here because you care enough to track what's actually happening.",
   "onboard.child_age": "How old is the child?",
@@ -234,6 +246,14 @@
   "onboard.back": "Back",
   "onboard.continue": "Continue",
   "onboard.get_started": "Get Started",
+  "onboard.age_years": "{age} years",
+  "onboard.yr": "yr",
+  "onboard.yrs": "yrs",
+  "onboard.state_hostile": "Hostile",
+  "onboard.state_avoidant": "Avoidant",
+  "onboard.state_tense": "Tense",
+  "onboard.state_neutral": "Neutral",
+  "onboard.state_warming": "Warming",
 
   "report.title": "Monthly Update from StepStrong",
   "report.logged": "This month, I logged {count} interactions with your child.",
@@ -263,6 +283,8 @@
   "subscribe.active": "Premium Active",
   "subscribe.no_products": "No subscription products available. Please try again later.",
   "subscribe.error": "Something went wrong. Please try again.",
+
+  "card.source": "Source",
 
   "common.all": "All",
   "common.loading": "Loading\u2026",

@@ -22,7 +22,7 @@ export default function Perspective({ entries, tier, openCard }) {
           <p style={{ color: P.muted, fontSize: 12, margin: 0, lineHeight: 1.5 }}>
             {viewedToday >= dailyLimit
               ? t("perspective.free_limit_reached")
-              : `${dailyLimit - viewedToday} free card remaining today. Premium unlocks all ${CARDS.length} cards.`}
+              : t("perspective.free_remaining", { count: dailyLimit - viewedToday, total: CARDS.length })}
           </p>
         </div>
       )}

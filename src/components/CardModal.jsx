@@ -7,7 +7,7 @@ export default function CardModal({ card, onClose, auto, onDisableAuto }) {
   return (
     <Modal onClose={() => { if (checked && onDisableAuto) onDisableAuto(); onClose(); }} title={`\u25C7 ${card.title}`} titleColor={P.warm}>
       <p style={{ color: "#D1D5DB", fontSize: 15, lineHeight: 1.7 }}>{card.body}</p>
-      {card.src && <p style={{ color: P.blue, fontSize: 12, fontStyle: "italic", marginTop: 12 }}>Source: {card.src}</p>}
+      {card.src && <p style={{ color: P.blue, fontSize: 12, fontStyle: "italic", marginTop: 12 }}>{t("card.source")}: {card.src}</p>}
       {card.quote && (
         <div style={{ background: P.bg, borderRadius: 12, padding: 16, marginTop: 16, borderLeft: `3px solid ${P.warm}44` }}>
           <p style={{ color: P.text, fontSize: 14, lineHeight: 1.7, fontStyle: "italic", margin: 0 }}>{card.quote}</p>
