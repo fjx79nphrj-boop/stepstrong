@@ -31,7 +31,7 @@ export default function Onboarding({ onDone }) {
     { title: t("onboard.before_start"), sub: t("onboard.before_sub"), content: (
       <div>
         <p style={css.obText}>The path to a functional relationship with a resistant stepchild typically takes <strong style={{ color: P.warm }}>7 to 12 years</strong>. The fastest documented full integration was 4 years. Some families never get there &mdash; and a stable, respectful distance is a valid outcome.</p>
-        <p style={css.obText}>No app will change that timeline. What this tool does is make the invisible visible &mdash; so you can see whether your efforts are producing change, even when it doesn't feel like it.</p>
+        <p style={css.obText}>{t("onboard.before_text2")}</p>
         <p style={css.obText}>You're not here because you failed. You're here because you care enough to track what's actually happening.</p>
       </div>
     )},
