@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { CARDS, P, t } from "./config/index.js";
 import { idb, put, get, getAll, del, STORES } from "./db/indexedDb.js";
 import { isNative, initPurchases, checkEntitlement } from "./services/purchases.js";
+import { encryptBackup, decryptBackup } from "./services/crypto.js";
 import { scheduleDaily } from "./services/notifications.js";
 import { meetsReviewCriteria, requestReview } from "./services/review.js";
 import { css } from "./styles/css.js";
@@ -77,47 +78,43 @@ export default function App() {
   const saveSnap = async (s) => { await put(S.snapshots, s); setSnaps(prev => [...prev.filter(x => x.id !== s.id), s].sort((a, b) => new Date(a.date) - new Date(b.date))); };
   const delSnap = async (id) => { await del(S.snapshots, id); setSnaps(prev => prev.filter(x => x.id !== id)); };
 
-  const exportData = async () => {
-    const d = JSON.stringify({ entries, profile, snapshots: snaps, exported: new Date().toISOString() }, null, 2);
-    const filename = `stepstrong-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  const exportData = async (password) => {
+    const payload = { entries, profile, snapshots: snaps, exported: new Date().toISOString() };
+    const encrypted = await encryptBackup(payload, password);
+    const filename = `stepstrong-backup-${new Date().toISOString().slice(0, 10)}.stepstrong.enc`;
+    const blob = new Blob([encrypted], { type: "application/octet-stream" });
     if (isNativeApp && navigator.share) {
       try {
-        const file = new File([d], filename, { type: "application/json" });
+        const file = new File([blob], filename, { type: "application/octet-stream" });
         await navigator.share({ files: [file] });
       } catch (e) {
-        if (e.name !== "AbortError") console.error("Export share error:", e);
+        if (e.name !== "AbortError") throw e;
       }
     } else {
       const a = document.createElement("a");
-      a.href = URL.createObjectURL(new Blob([d], { type: "application/json" }));
+      a.href = URL.createObjectURL(blob);
       a.download = filename;
       a.click();
+      URL.revokeObjectURL(a.href);
     }
   };
 
-  const importData = (evt) => {
-    const f = evt.target.files[0];
-    if (!f) return;
-    const r = new FileReader();
-    r.onload = async (e) => {
-      try {
-        const d = JSON.parse(e.target.result);
-        const db = await idb();
-        await new Promise((ok, fail) => {
-          const tx = db.transaction([S.entries, S.profile, S.snapshots], "readwrite");
-          tx.objectStore(S.entries).clear();
-          tx.objectStore(S.profile).clear();
-          tx.objectStore(S.snapshots).clear();
-          tx.oncomplete = () => ok();
-          tx.onerror = () => fail(tx.error);
-        });
-        if (d.entries) for (const x of d.entries) await put(S.entries, x);
-        if (d.profile) await put(S.profile, { key: "main", data: d.profile });
-        if (d.snapshots) for (const x of d.snapshots) await put(S.snapshots, x);
-        window.location.reload();
-      } catch(e) { alert("Invalid backup file."); }
-    };
-    r.readAsText(f);
+  const importData = async (file, password) => {
+    const buffer = await file.arrayBuffer();
+    const d = await decryptBackup(new Uint8Array(buffer), password); // throws on wrong password
+    const db = await idb();
+    await new Promise((ok, fail) => {
+      const tx = db.transaction([S.entries, S.profile, S.snapshots], "readwrite");
+      tx.objectStore(S.entries).clear();
+      tx.objectStore(S.profile).clear();
+      tx.objectStore(S.snapshots).clear();
+      tx.oncomplete = () => ok();
+      tx.onerror = () => fail(tx.error);
+    });
+    if (d.entries) for (const x of d.entries) await put(S.entries, x);
+    if (d.profile) await put(S.profile, { key: "main", data: d.profile });
+    if (d.snapshots) for (const x of d.snapshots) await put(S.snapshots, x);
+    window.location.reload();
   };
 
   const openEntry = (e = null) => setModal({ type: "entry", data: e });

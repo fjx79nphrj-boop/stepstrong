@@ -7,7 +7,7 @@ import Modal from "./ui/Modal.jsx";
 import Btn from "./ui/Btn.jsx";
 
 export default function SettingsModal({ onClose, onExport, onImport, onRedo, onErase, tier, onSetTier, isNativeApp, onRefreshTier, profile, onSaveProfile }) {
-  const ref = useRef(null);
+  const fileRef = useRef(null);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [eraseStep, setEraseStep] = useState(0);
   const [purchasing, setPurchasing] = useState(false);
@@ -15,6 +15,66 @@ export default function SettingsModal({ onClose, onExport, onImport, onRedo, onE
   const [error, setError] = useState(null);
   const [notifDenied, setNotifDenied] = useState(false);
   const [notifError, setNotifError] = useState(null);
+
+  // Export password flow
+  const [exportStep, setExportStep] = useState("idle"); // "idle" | "pw"
+  const [exportPw, setExportPw] = useState("");
+  const [exportPwConfirm, setExportPwConfirm] = useState("");
+  const [exportPwErr, setExportPwErr] = useState("");
+  const [exporting, setExporting] = useState(false);
+
+  // Import password flow
+  const [importFile, setImportFile] = useState(null);
+  const [importStep, setImportStep] = useState("idle"); // "idle" | "pw"
+  const [importPw, setImportPw] = useState("");
+  const [importPwErr, setImportPwErr] = useState("");
+  const [importing, setImporting] = useState(false);
+
+  const handleExportClick = () => {
+    setExportStep("pw");
+    setExportPw("");
+    setExportPwConfirm("");
+    setExportPwErr("");
+  };
+
+  const handleExportSubmit = async () => {
+    if (!exportPw) { setExportPwErr(t("settings.export_pw_empty")); return; }
+    if (exportPw !== exportPwConfirm) { setExportPwErr(t("settings.export_pw_mismatch")); return; }
+    setExporting(true);
+    setExportPwErr("");
+    try {
+      await onExport(exportPw);
+      setExportStep("idle");
+    } catch (e) {
+      if (e?.name !== "AbortError") setExportPwErr(t("settings.export_error"));
+      else setExportStep("idle");
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const handleFileChange = (evt) => {
+    const f = evt.target.files[0];
+    if (!f) return;
+    setImportFile(f);
+    setImportStep("pw");
+    setImportPw("");
+    setImportPwErr("");
+    fileRef.current.value = "";
+  };
+
+  const handleImportSubmit = async () => {
+    if (!importPw) { setImportPwErr(t("settings.export_pw_empty")); return; }
+    setImporting(true);
+    setImportPwErr("");
+    try {
+      await onImport(importFile, importPw);
+      // page reloads on success
+    } catch (e) {
+      setImportPwErr(t("settings.import_wrong_pw"));
+      setImporting(false);
+    }
+  };
 
   const handleSubscribe = async () => {
     setError(null);
@@ -138,9 +198,64 @@ export default function SettingsModal({ onClose, onExport, onImport, onRedo, onE
       )}
 
       <p style={{ color: P.dim, fontSize: 13, marginBottom: 14 }}>{t("settings.data_note")}</p>
-      <Btn onClick={onExport} full>{t("settings.export")}</Btn>
-      <Btn onClick={() => ref.current?.click()} full secondary style={{ marginTop: 8 }}>{t("settings.import")}</Btn>
-      <input ref={ref} type="file" accept=".json" onChange={onImport} style={{ position: "absolute", left: -9999, opacity: 0, width: 1, height: 1 }} aria-label="Choose backup file" />
+
+      {/* Export */}
+      {exportStep === "idle" ? (
+        <Btn onClick={handleExportClick} full>{t("settings.export")}</Btn>
+      ) : (
+        <div style={{ padding: 14, background: P.card, borderRadius: 10, border: `1px solid ${P.border2}`, marginBottom: 0 }}>
+          <input
+            type="password"
+            value={exportPw}
+            onChange={e => setExportPw(e.target.value)}
+            placeholder={t("settings.export_pw_label")}
+            style={{ width: "100%", boxSizing: "border-box", padding: "10px 12px", borderRadius: 8, border: `1px solid ${P.border2}`, background: P.bg, color: P.text, fontSize: 14, fontFamily: "inherit", marginBottom: 8 }}
+            autoFocus
+          />
+          <input
+            type="password"
+            value={exportPwConfirm}
+            onChange={e => setExportPwConfirm(e.target.value)}
+            placeholder={t("settings.export_pw_confirm")}
+            onKeyDown={e => e.key === "Enter" && handleExportSubmit()}
+            style={{ width: "100%", boxSizing: "border-box", padding: "10px 12px", borderRadius: 8, border: `1px solid ${P.border2}`, background: P.bg, color: P.text, fontSize: 14, fontFamily: "inherit", marginBottom: 8 }}
+          />
+          <p style={{ color: P.warm, fontSize: 11, margin: "0 0 10px", lineHeight: 1.5 }}>{t("settings.export_pw_warning")}</p>
+          {exportPwErr && <p style={{ color: P.red, fontSize: 12, margin: "0 0 8px" }}>{exportPwErr}</p>}
+          <div style={{ display: "flex", gap: 8 }}>
+            <Btn onClick={handleExportSubmit} style={{ flex: 1 }} disabled={exporting}>
+              {exporting ? t("settings.export_encrypting") : t("settings.export")}
+            </Btn>
+            <Btn onClick={() => setExportStep("idle")} secondary style={{ flex: 1 }} disabled={exporting}>{t("entry.cancel")}</Btn>
+          </div>
+        </div>
+      )}
+
+      {/* Import */}
+      {importStep === "idle" ? (
+        <Btn onClick={() => fileRef.current?.click()} full secondary style={{ marginTop: 8 }}>{t("settings.import")}</Btn>
+      ) : (
+        <div style={{ padding: 14, background: P.card, borderRadius: 10, border: `1px solid ${P.border2}`, marginTop: 8 }}>
+          <p style={{ color: P.muted, fontSize: 12, margin: "0 0 8px" }}>{importFile?.name}</p>
+          <input
+            type="password"
+            value={importPw}
+            onChange={e => setImportPw(e.target.value)}
+            placeholder={t("settings.import_pw_label")}
+            onKeyDown={e => e.key === "Enter" && handleImportSubmit()}
+            style={{ width: "100%", boxSizing: "border-box", padding: "10px 12px", borderRadius: 8, border: `1px solid ${P.border2}`, background: P.bg, color: P.text, fontSize: 14, fontFamily: "inherit", marginBottom: 8 }}
+            autoFocus
+          />
+          {importPwErr && <p style={{ color: P.red, fontSize: 12, margin: "0 0 8px" }}>{importPwErr}</p>}
+          <div style={{ display: "flex", gap: 8 }}>
+            <Btn onClick={handleImportSubmit} style={{ flex: 1 }} disabled={importing}>
+              {importing ? t("settings.import_decrypting") : t("settings.import")}
+            </Btn>
+            <Btn onClick={() => { setImportStep("idle"); setImportFile(null); }} secondary style={{ flex: 1 }} disabled={importing}>{t("entry.cancel")}</Btn>
+          </div>
+        </div>
+      )}
+      <input ref={fileRef} type="file" accept=".stepstrong.enc" onChange={handleFileChange} style={{ position: "absolute", left: -9999, opacity: 0, width: 1, height: 1 }} aria-label="Choose backup file" />
       <hr style={{ border: "none", borderTop: `1px solid ${P.border}`, margin: "20px 0 14px" }} />
       <Btn onClick={onRedo} full secondary>{t("settings.redo_onboarding")}</Btn>
       <hr style={{ border: "none", borderTop: `1px solid ${P.border}`, margin: "20px 0 14px" }} />

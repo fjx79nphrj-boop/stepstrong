@@ -14,21 +14,7 @@
 
   ],
   "products" : [
-    {
-      "displayPrice" : "199.99",
-      "familyShareable" : false,
-      "internalID" : "C2BF2B5B",
-      "localizations" : [
-        {
-          "description" : "",
-          "displayName" : "",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "lifetime",
-      "referenceName" : "Premium Lifetime",
-      "type" : "NonConsumable"
-    }
+
   ],
   "settings" : {
     "_failTransactionsEnabled" : false,
@@ -97,49 +83,21 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "9.99",
+          "displayPrice" : "4.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "440BACC6",
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "",
-              "displayName" : "",
+              "description" : "Full access to all StepStrong features",
+              "displayName" : "StepStrong Premium",
               "locale" : "en_US"
             }
           ],
           "productID" : "monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Premium Monthly",
-          "subscriptionGroupID" : "96520A29",
-          "type" : "RecurringSubscription",
-          "winbackOffers" : [
-
-          ]
-        },
-        {
-          "adHocOffers" : [
-
-          ],
-          "codeOffers" : [
-
-          ],
-          "displayPrice" : "79.99",
-          "familyShareable" : false,
-          "groupNumber" : 1,
-          "internalID" : "7954CCE9",
-          "introductoryOffer" : null,
-          "localizations" : [
-            {
-              "description" : "",
-              "displayName" : "",
-              "locale" : "en_US"
-            }
-          ],
-          "productID" : "yearly",
-          "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Premium Yearly",
           "subscriptionGroupID" : "96520A29",
           "type" : "RecurringSubscription",
           "winbackOffers" : [
