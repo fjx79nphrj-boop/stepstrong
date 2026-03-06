@@ -11,7 +11,8 @@ export default function Home({ entries, profile, snaps, tier, openEntry, openSna
   const todayN = entries.filter(e => e.date.slice(0, 10) === today).length;
   const week = entries.filter(e => daysAgo(e.date) <= 7);
   const weekPos = week.filter(e => e.response === "positive" || e.response === "neutral").length;
-  const days = profile?.startDate ? daysAgo(profile.startDate) : 0;
+  const oldest = entries.length ? entries[entries.length - 1].date : null;
+  const days = oldest ? daysAgo(oldest) : (profile?.startDate ? daysAgo(profile.startDate) : 0);
   const lastSnap = snaps.length ? snaps[snaps.length - 1] : null;
   const snapDue = !lastSnap || daysAgo(lastSnap.date) >= 28;
 
